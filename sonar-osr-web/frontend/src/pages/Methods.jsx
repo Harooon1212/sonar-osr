@@ -1,106 +1,116 @@
 import React from 'react';
-import { BookOpen } from 'lucide-react';
+import katex from 'katex';
+import PageHeader from '../layout/PageHeader';
+import { Card, CardHeader } from '../ui/Card';
+import Badge from '../ui/Badge';
+import { useBenchmark } from '../hooks/useBenchmark';
+import { formatDecimal, formatPercent } from '../lib/format';
+
+function MathBlock({ latex, label }) {
+  const html = React.useMemo(
+    () => katex.renderToString(latex, { displayMode: true, throwOnError: false }),
+    [latex]
+  );
+  return (
+    <div className="my-4 p-4 rounded-control bg-soft border border-line overflow-x-auto">
+      {label && <div className="text-[11px] font-medium text-ink-muted mb-2">{label}</div>}
+      <div className="text-ink" dangerouslySetInnerHTML={{ __html: html }} />
+    </div>
+  );
+}
 
 export default function Methods() {
+  const { data: benchmark } = useBenchmark();
+  const dml = benchmark?.methods?.dml;
+  const svdd = benchmark?.methods?.svdd;
+  const msp = benchmark?.methods?.msp;
+
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Methodology and mathematical formulations</h1>
-        <p className="page-desc">
-          Mathematical foundations, loss functions, and decision boundary architectures governing the 3 acoustic recognition paradigms.
-        </p>
-      </div>
+      <PageHeader
+        title="Methodology & Mathematical Formulations"
+        subtitle="Mathematical foundations, loss functions, and decision boundary architectures governing the 3 acoustic recognition paradigms"
+      />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {/* Method 1: DML */}
-        <div className="glass--card">
-          <div className="card-header">
-            <h3 className="card-title">
-              <span className="badge badge-info" style={{ marginRight: '8px' }}>Primary architecture</span>
-              Deep metric learning (DML) with triplet margin loss
-            </h3>
-            <span className="badge badge-info font-mono tabular-nums">AUROC 0.9255</span>
-          </div>
-
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '14px' }}>
-            Rather than learning hyperplane decision boundaries, DML maps acoustic features into a 128-dimensional 
+      <div className="space-y-6">
+        <Card>
+          <CardHeader
+            title="1. Deep Metric Learning (DML) with Triplet Margin Loss"
+            subtitle="Geometric / Embedding paradigm · 128-D L2-normalized hypersphere"
+            right={
+              <Badge tone="primary" className="font-mono">
+                AUROC {formatDecimal(dml?.auroc, 4)}
+              </Badge>
+            }
+          />
+          <p className="text-sm text-ink-2 leading-relaxed">
+            Rather than learning hyperplane decision boundaries, DML maps acoustic features into a 128-dimensional
             L2-normalized hyperspherical space where Euclidean distance directly reflects semantic acoustic similarity.
-          </p>
-
-          <div className="plate" style={{ padding: '14px 18px', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--glow-cyan)', marginBottom: '14px' }}>
-            <div style={{ color: 'var(--text-faint)', fontSize: '11px', marginBottom: '4px' }}>Semi-hard triplet margin loss (margin α = 0.20)</div>
-            L_triplet = max(0, ||f(x_a) - f(x_p)||^2 - ||f(x_a) - f(x_n)||^2 + α)
-          </div>
-
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-            Where <code className="font-mono">x_a</code> is the anchor echo, <code className="font-mono">x_p</code> is a positive echo from the same class, 
-            <code className="font-mono">x_n</code> is a negative echo from a different class, and <code className="font-mono">α = 0.20</code> is the enforced margin. 
             Hard-triplet online mining ensures rapid gradient convergence and dense cluster compactness.
           </p>
+          <MathBlock
+            label="Semi-hard triplet margin loss (margin α = 0.20)"
+            latex="\mathcal{L}_{\text{triplet}} = \max\left(0,\; \|f(x_a) - f(x_p)\|_2^2 - \|f(x_a) - f(x_n)\|_2^2 + \alpha\right), \quad \alpha = 0.20"
+          />
+          <MathBlock
+            label="Open-set decision rule (Euclidean distance to class centroids)"
+            latex="d_{\min} = \min_k \|f(x) - c_k\|_2 \quad;\quad d_{\min} < \tau \implies \text{Class } k, \;\text{else Unknown (Rejected)}"
+          />
+          <p className="text-xs text-ink-muted">
+            Operating characteristic: Deep Metric Learning achieves the highest overall AUROC (
+            <span className="font-mono font-semibold text-ink">{formatDecimal(dml?.auroc, 4)}</span>) and known-class recall (
+            <span className="font-mono font-semibold text-ink">{formatPercent(dml?.tpr, 2)}</span>).
+          </p>
+        </Card>
 
-          <div className="inset" style={{ marginTop: '14px', padding: '14px', fontSize: '13px' }}>
-            <strong style={{ color: 'var(--text-bright)' }}>Open-set decision rule (Equation 2):</strong> During inference, the query embedding is compared against all class cluster centroids:
-            <div className="font-mono" style={{ margin: '6px 0', color: 'var(--glow-cyan)' }}>
-              d_min = min_k ||f(x) - c_k||_2 &nbsp; | &nbsp; if d_min &lt; τ &rarr; Class k, else &rarr; Unknown (rejected)
-            </div>
-            <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '4px' }}>
-              Deep metric learning achieves the highest overall AUROC (0.9255) and known-class recall (94.10%).
-            </div>
-          </div>
-        </div>
-
-        {/* Method 2: One-Class SVDD (nearest centroid) */}
-        <div className="glass--card">
-          <div className="card-header">
-            <h3 className="card-title">
-              <span className="badge badge-known" style={{ marginRight: '8px' }}>One-class paradigm</span>
-              One-class SVDD (nearest centroid)
-            </h3>
-            <span className="badge badge-known font-mono tabular-nums">AUROC 0.8986</span>
-          </div>
-
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '14px' }}>
-            One-class SVDD evaluates acoustic representations against class centroids in the 2048-D global-average-pooled 
+        <Card>
+          <CardHeader
+            title="2. Deep SVDD (Nearest Centroid Hypersphere)"
+            subtitle="Boundary-based paradigm · 2048-D Global Average Pooled feature space"
+            right={
+              <Badge tone="good" className="font-mono">
+                AUROC {formatDecimal(svdd?.auroc, 4)}
+              </Badge>
+            }
+          />
+          <p className="text-sm text-ink-2 leading-relaxed">
+            One-class SVDD evaluates acoustic representations against class centroids in the 2048-D global-average-pooled
             feature space of the fine-tuned ResNet-50. Points falling outside the learned decision radius τ are detected as anomalies.
           </p>
-
-          <div className="plate" style={{ padding: '14px 18px', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--highlight-green)', marginBottom: '14px' }}>
-            <div style={{ color: 'var(--text-faint)', fontSize: '11px', marginBottom: '4px' }}>Class centroid definition (2048-D feature space)</div>
-            {"C_k = (1 / N_k) * Σ_{i=1}^{N_k} f(x_i)"}
-          </div>
-
-          <div className="inset" style={{ padding: '14px', fontSize: '13px', color: 'var(--text-muted)' }}>
-            <strong style={{ color: 'var(--text-bright)' }}>Operating characteristic:</strong> One-class SVDD achieves the 
-            lowest false-positive rate across all tested methods (<strong style={{ color: 'var(--highlight-green)' }}>FPR: 11.71%</strong>), 
-            making it the safest choice for defensive underwater navigation where false alarms on known marine debris must be minimized.
-          </div>
-        </div>
-
-        {/* Method 3: Baseline MSP */}
-        <div className="glass--card">
-          <div className="card-header">
-            <h3 className="card-title">
-              <span className="badge badge-warning" style={{ marginRight: '8px' }}>Baseline paradigm</span>
-              Maximum Softmax Probability (MSP) with ResNet-50
-            </h3>
-            <span className="badge badge-warning font-mono tabular-nums">AUROC 0.8165</span>
-          </div>
-
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '14px' }}>
-            A standard ResNet-50 backbone fine-tuned with cross-entropy loss. Unknown rejection is attempted by thresholding 
-            the maximum softmax output: <code className="font-mono">P_max = max_k Softmax(z_k)</code>.
+          <MathBlock
+            label="Class centroid definition (2048-D feature space)"
+            latex="C_k = \frac{1}{N_k} \sum_{i=1}^{N_k} f(x_i)"
+          />
+          <p className="text-xs text-ink-muted">
+            Operating characteristic: Deep SVDD achieves the lowest false-positive rate (
+            <span className="font-mono font-semibold text-good">{formatPercent(svdd?.fpr, 2)}</span>) and highest unknown detection rate (
+            <span className="font-mono font-semibold text-good">{formatPercent(svdd?.udr, 2)}</span>), making it ideal for defensive underwater navigation.
           </p>
+        </Card>
 
-          <div className="plate" style={{ padding: '14px 18px', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--semantic-warning)', marginBottom: '14px' }}>
-            <div style={{ color: 'var(--text-faint)', fontSize: '11px', marginBottom: '4px' }}>Softmax confidence score</div>
-            {"y_hat = argmax_k p_k(x),    known iff max_k p_k(x) ≥ τ"}
-          </div>
-
-          <div className="inset" style={{ padding: '14px', fontSize: '13px', color: 'var(--text-muted)' }}>
-            <strong style={{ color: 'var(--semantic-warning)' }}>Theoretical limitation:</strong> Softmax normalizes unbounded linear logits across only the known classes. 
-            Even an arbitrary out-of-distribution input will project onto some dominant logit, producing an artificially high probability score (&gt;95%), causing catastrophic false acceptances.
-          </div>
-        </div>
+        <Card>
+          <CardHeader
+            title="3. Baseline Maximum Softmax Probability (MSP)"
+            subtitle="Confidence-based baseline · Standard ResNet-50 cross-entropy"
+            right={
+              <Badge tone="warn" className="font-mono">
+                AUROC {formatDecimal(msp?.auroc, 4)}
+              </Badge>
+            }
+          />
+          <p className="text-sm text-ink-2 leading-relaxed">
+            A standard ResNet-50 backbone fine-tuned with cross-entropy loss. Unknown rejection is attempted by thresholding
+            the maximum softmax output across known logits.
+          </p>
+          <MathBlock
+            label="Softmax confidence score & decision rule"
+            latex="P_{\max} = \max_k \text{Softmax}(z_k) \quad;\quad \hat{y} = \arg\max_k p_k(x),\;\text{known iff } P_{\max} \ge \tau"
+          />
+          <p className="text-xs text-ink-muted">
+            Theoretical limitation: Softmax normalizes unbounded linear logits across only known classes, causing artificially high confidence on out-of-distribution inputs (FPR{' '}
+            <span className="font-mono font-semibold text-bad">{formatPercent(msp?.fpr, 2)}</span>).
+          </p>
+        </Card>
       </div>
     </div>
   );

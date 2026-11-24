@@ -1,569 +1,573 @@
-import React, { useState } from 'react';
-import { runPredict } from '../lib/api';
-import MarginGauge from '../components/charts/MarginGauge';
-import CentroidRadar from '../components/charts/CentroidRadar';
-import { Upload, Sliders, ShieldCheck, ShieldAlert, Cpu, Download, RefreshCw, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ShieldCheck,
+  ShieldAlert,
+  Download,
+  Clock,
+  Sliders,
+  Sparkles,
+} from 'lucide-react';
+import PageHeader from '../layout/PageHeader';
+import EngineStatus from '../layout/EngineStatus';
+import { Card, CardHeader } from '../ui/Card';
+import Badge from '../ui/Badge';
+import Dropzone from '../ui/Dropzone';
+import BeforeAfter from '../ui/BeforeAfter';
+import Skeleton from '../ui/Skeleton';
+import ErrorBanner from '../ui/ErrorBanner';
+import MarginGauge from '../features/demo/MarginGauge';
+import CentroidBars from '../features/demo/CentroidBars';
+import { fetchSampleManifest, runPredict } from '../lib/api';
+import { downloadJson } from '../lib/export';
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import { useSettings } from '../store/useSettings';
+import { useEngine } from '../store/useEngine';
+import { cn } from '../lib/cn';
 
-export default function LiveDemo() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState('/samples/bottle-sample.png');
-  const [threshold, setThreshold] = useState(0.50);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const FALLBACK_PRESETS = [
+  { filename: 'bottle-sample.png', class: 'bottle', is_known: true, label: 'Bottle (Known)', src: '/samples/bottle-sample.png' },
+  { filename: 'can-sample.png', class: 'can', is_known: true, label: 'Can (Known)', src: '/samples/can-sample.png' },
+  { filename: 'tire-sample.png', class: 'tire', is_known: true, label: 'Tire (Known)', src: '/samples/tire-sample.png' },
+  { filename: 'propeller-sample.png', class: 'propeller', is_known: true, label: 'Propeller (Known)', src: '/samples/propeller-sample.png' },
+  { filename: 'chain-sample.png', class: 'chain', is_known: false, label: 'Chain (Unknown)', src: '/samples/chain-sample.png' },
+  { filename: 'valve-sample.png', class: 'valve', is_known: false, label: 'Valve (Unknown)', src: '/samples/valve-sample.png' },
+  { filename: 'shampoo-sample.png', class: 'shampoo-bottle', is_known: false, label: 'Shampoo (Unknown)', src: '/samples/shampoo-sample.png' },
+];
 
-  // Default initial prediction state (at tau = 0.50, bottle distance 0.28 <= 0.50 -> Known)
-  const [prediction, setPrediction] = useState({
-    decision: 'KNOWN',
-    predicted_class: 'bottle',
-    open_set_score: 0.884,
-    min_distance: 0.28,
-    is_known: true,
-    inference_time_ms: 18.2,
-    threshold: 0.50,
-    showdown: {
-      dml: {
-        decision: 'KNOWN',
-        class: 'bottle',
-        predicted_class: 'bottle',
-        score: 0.884,
-        distance: 0.28,
-        is_known: true,
-        explanation: 'Distance to cluster centroid (0.28) is inside decision radius (tau = 0.50).'
-      },
-      svdd: {
-        decision: 'KNOWN',
-        class: 'bottle',
-        predicted_class: 'bottle',
-        score: 0.842,
-        distance: 0.31,
-        is_known: true,
-        explanation: 'Distance to centroid (0.31) is safely enclosed within hypersphere radius (tau = 0.50).'
-      },
-      msp: {
-        decision: 'KNOWN',
-        class: 'bottle',
-        predicted_class: 'bottle',
-        score: 0.962,
-        distance: 0.28,
-        is_known: true,
-        explanation: 'High softmax probability (0.962) aligns with known class bottle.'
-      }
-    },
-    distances: [
-      { class_name: 'bottle', distance: 0.28 },
-      { class_name: 'can', distance: 1.25 },
-      { class_name: 'tire', distance: 1.48 },
-      { class_name: 'drink-carton', distance: 1.31 },
-      { class_name: 'hook', distance: 1.55 },
-      { class_name: 'propeller', distance: 1.42 }
-    ]
-  });
+function normalizeDistances(data) {
+  if (Array.isArray(data?.distances) && data.distances.length > 0) {
+    return data.distances;
+  }
+  if (data?.centroid_distances && typeof data.centroid_distances === 'object') {
+    return Object.entries(data.centroid_distances).map(([class_name, distance]) => ({
+      class_name,
+      distance: Number(distance),
+    }));
+  }
+  return [];
+}
 
-  const presets = [
-    { label: 'Bottle (Known)', path: '/samples/bottle-sample.png', known: true, classKey: 'bottle' },
-    { label: 'Can (Known)', path: '/samples/can-sample.png', known: true, classKey: 'can' },
-    { label: 'Tire (Known)', path: '/samples/tire-sample.png', known: true, classKey: 'tire' },
-    { label: 'Propeller (Known)', path: '/samples/propeller-sample.png', known: true, classKey: 'propeller' },
-    { label: 'Chain (Unknown)', path: '/samples/chain-sample.png', known: false, classKey: 'chain' },
-    { label: 'Valve (Unknown)', path: '/samples/valve-sample.png', known: false, classKey: 'valve' },
-    { label: 'Shampoo (Unknown)', path: '/samples/shampoo-sample.png', known: false, classKey: 'shampoo-bottle' },
+function getFallbackPrediction(fileOrPreset, tau) {
+  const name = (fileOrPreset?.filename || fileOrPreset?.name || fileOrPreset?.class || fileOrPreset?.src || '').toLowerCase();
+  const isUnknown = name.includes('chain') || name.includes('valve') || name.includes('shampoo') || name.includes('unknown') || name.includes('standing');
+  
+  let matchedClass = 'bottle';
+  if (name.includes('can')) matchedClass = 'can';
+  else if (name.includes('tire')) matchedClass = 'tire';
+  else if (name.includes('propeller')) matchedClass = 'propeller';
+  else if (name.includes('carton')) matchedClass = 'drink-carton';
+  else if (name.includes('hook')) matchedClass = 'hook';
+
+  const distances = [
+    { class_name: 'bottle', distance: isUnknown ? 1.45 : (matchedClass === 'bottle' ? 0.28 : 1.25) },
+    { class_name: 'can', distance: isUnknown ? 1.52 : (matchedClass === 'can' ? 0.22 : 1.35) },
+    { class_name: 'tire', distance: isUnknown ? 1.62 : (matchedClass === 'tire' ? 0.19 : 1.48) },
+    { class_name: 'drink-carton', distance: isUnknown ? 1.41 : (matchedClass === 'drink-carton' ? 0.25 : 1.31) },
+    { class_name: 'hook', distance: isUnknown ? 1.70 : (matchedClass === 'hook' ? 0.31 : 1.55) },
+    { class_name: 'propeller', distance: isUnknown ? 1.58 : (matchedClass === 'propeller' ? 0.21 : 1.42) },
   ];
 
-  // Helper to construct normalized prediction object matching Euclidean boundary physics
-  const formatPredictionResult = (data, targetUrlOrName, thresh) => {
-    const nameStr = (targetUrlOrName || '').toLowerCase();
-    const isUnknownPreset = nameStr.includes('chain') || nameStr.includes('valve') || nameStr.includes('shampoo') || nameStr.includes('unknown');
-    
-    // Detect matched class name
-    let matched = 'bottle';
-    if (nameStr.includes('can')) matched = 'can';
-    else if (nameStr.includes('tire')) matched = 'tire';
-    else if (nameStr.includes('propeller')) matched = 'propeller';
-    else if (nameStr.includes('hook')) matched = 'hook';
-    else if (nameStr.includes('carton')) matched = 'drink-carton';
+  const minDistance = distances.find((d) => d.class_name === matchedClass)?.distance ?? (isUnknown ? 1.45 : 0.28);
+  const svddDistance = +(minDistance + 0.03).toFixed(2);
 
-    // Baseline distances in Euclidean metric space
-    let distancesList = [];
-    if (Array.isArray(data?.distances) && data.distances.length > 0) {
-      distancesList = data.distances;
-    } else if (data?.centroid_distances && typeof data.centroid_distances === 'object') {
-      distancesList = Object.entries(data.centroid_distances).map(([k, v]) => ({ class_name: k, distance: Number(v) }));
-    } else {
-      distancesList = [
-        { class_name: 'bottle', distance: isUnknownPreset ? 1.45 : (matched === 'bottle' ? 0.28 : 1.25) },
-        { class_name: 'can', distance: isUnknownPreset ? 1.52 : (matched === 'can' ? 0.22 : 1.35) },
-        { class_name: 'tire', distance: isUnknownPreset ? 1.62 : (matched === 'tire' ? 0.19 : 1.48) },
-        { class_name: 'drink-carton', distance: isUnknownPreset ? 1.41 : (matched === 'drink-carton' ? 0.25 : 1.31) },
-        { class_name: 'hook', distance: isUnknownPreset ? 1.70 : (matched === 'hook' ? 0.31 : 1.55) },
-        { class_name: 'propeller', distance: isUnknownPreset ? 1.58 : (matched === 'propeller' ? 0.21 : 1.42) },
-      ];
-    }
+  const dmlKnown = minDistance <= tau;
+  const svddKnown = svddDistance <= tau;
+  const mspScore = isUnknown ? 0.785 : 0.975;
+  const mspKnown = mspScore >= Math.min(0.98, tau);
 
-    // Nearest distance to predicted class centroid
-    const minDistance = distancesList.find(d => d.class_name === matched)?.distance ?? (isUnknownPreset ? 1.45 : 0.28);
-    const svddDistance = +(minDistance + 0.03).toFixed(2);
+  const assignedClass = isUnknown ? (dmlKnown ? matchedClass : 'UNKNOWN_OBJECT') : matchedClass;
+  const isKnownDecision = isUnknown ? dmlKnown : dmlKnown;
+  const score = +(Math.max(0, 1 - minDistance / 2)).toFixed(3);
 
-    // EXACT OPEN-SET BOUNDARY RULE:
-    // If distance <= tau, the bar is BELOW the red line -> KNOWN!
-    // If distance > tau, the bar is ABOVE the red line -> UNKNOWN (REJECTED)!
-    const dmlKnown = minDistance <= thresh;
-    const svddKnown = svddDistance <= thresh;
-
-    // MSP (Softmax) does not have distance bounds; its confidence is uncalibrated probability
-    const mspScore = isUnknownPreset ? 0.785 : 0.975;
-    const mspKnown = mspScore >= Math.min(0.98, thresh);
-
-    const assignedClass = matched;
-
-    return {
-      decision: dmlKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-      predicted_class: assignedClass,
-      open_set_score: +(Math.max(0, 1 - minDistance / 2)).toFixed(3),
-      min_distance: minDistance,
-      is_known: dmlKnown,
-      inference_time_ms: data?.inference_time_ms || +(15.8 + Math.random() * 4).toFixed(1),
-      threshold: thresh,
-      showdown: {
-        dml: {
-          decision: dmlKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-          verdict: dmlKnown ? `KNOWN: ${assignedClass.toUpperCase()}` : 'UNKNOWN / NOVEL OBJECT',
-          class: assignedClass,
-          predicted_class: assignedClass,
-          distance: minDistance,
-          score: +(Math.max(0, 1 - minDistance / 2)).toFixed(3),
-          is_known: dmlKnown,
-          explanation: dmlKnown
-            ? `Distance to centroid (${minDistance.toFixed(2)}) is inside decision radius (tau = ${thresh.toFixed(2)}).`
-            : `Distance to centroid (${minDistance.toFixed(2)}) exceeds decision radius (tau = ${thresh.toFixed(2)}). Anomaly rejected.`
-        },
-        svdd: {
-          decision: svddKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-          verdict: svddKnown ? `KNOWN: ${assignedClass.toUpperCase()}` : 'UNKNOWN / NOVEL OBJECT',
-          class: assignedClass,
-          predicted_class: assignedClass,
-          distance: svddDistance,
-          score: +(Math.max(0, 1 - svddDistance / 2)).toFixed(3),
-          is_known: svddKnown,
-          explanation: svddKnown
-            ? `Distance to center (${svddDistance.toFixed(2)}) is inside hypersphere boundary (tau = ${thresh.toFixed(2)}).`
-            : `Distance to center (${svddDistance.toFixed(2)}) exceeds hypersphere boundary (tau = ${thresh.toFixed(2)}). Anomaly rejected.`
-        },
-        msp: {
-          decision: mspKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-          verdict: mspKnown ? `KNOWN: ${assignedClass.toUpperCase()}` : 'REJECTED',
-          class: assignedClass,
-          predicted_class: assignedClass,
-          distance: minDistance,
-          score: mspScore,
-          is_known: mspKnown,
-          explanation: `Softmax probability (${mspScore.toFixed(3)}) ${mspKnown ? 'exceeds' : 'below'} confidence threshold.`
-        }
-      },
-      distances: distancesList
-    };
-  };
-
-  const executeInferenceFromUrl = async (url, thresh) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      const filename = url.split('/').pop() || 'sonar_query.png';
-      const file = new File([blob], filename, { type: 'image/png' });
-
-      const data = await runPredict(file, thresh, 'all');
-      const formatted = formatPredictionResult(data, filename, thresh);
-      setPrediction(formatted);
-    } catch (err) {
-      console.warn('API predict error, using calibrated fallback:', err);
-      const filename = url.split('/').pop() || 'sonar_query.png';
-      const formatted = formatPredictionResult(null, filename, thresh);
-      setPrediction(formatted);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const executeInferenceFromFile = async (file, thresh) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await runPredict(file, thresh, 'all');
-      const formatted = formatPredictionResult(data, file.name, thresh);
-      setPrediction(formatted);
-    } catch (err) {
-      console.warn('API predict error for uploaded file:', err);
-      const formatted = formatPredictionResult(null, file.name, thresh);
-      setPrediction(formatted);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePresetSelect = (preset) => {
-    setPreviewUrl(preset.path);
-    setSelectedFile(null);
-    executeInferenceFromUrl(preset.path, threshold);
-  };
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-      executeInferenceFromFile(file, threshold);
-    }
-  };
-
-  // Immediate 60fps update when threshold slider is moved or preset button is clicked
-  const handleThresholdChange = (newThresh) => {
-    const safeThresh = parseFloat(Number(newThresh).toFixed(2));
-    setThreshold(safeThresh);
-
-    setPrediction((prev) => {
-      if (!prev || !prev.showdown) return prev;
-      
-      const minDistance = prev.distances?.find(d => d.class_name === prev.predicted_class)?.distance ?? prev.min_distance ?? 0.28;
-      const svddDistance = +(minDistance + 0.03).toFixed(2);
-
-      // Boundary check: is the bar BELOW the red line?
-      const dmlKnown = minDistance <= safeThresh;
-      const svddKnown = svddDistance <= safeThresh;
-
-      // MSP check
-      const mspScore = prev.showdown.msp?.score ?? 0.95;
-      const mspKnown = mspScore >= Math.min(0.98, safeThresh);
-
-      return {
-        ...prev,
-        threshold: safeThresh,
-        is_known: dmlKnown,
+  return {
+    is_known: isKnownDecision,
+    decision: isKnownDecision ? 'KNOWN' : 'UNKNOWN (REJECTED)',
+    verdict: isKnownDecision ? `KNOWN: ${matchedClass.toUpperCase()}` : 'UNKNOWN / NOVEL OBJECT',
+    predicted_class: assignedClass,
+    class: assignedClass,
+    top_known_match: matchedClass,
+    confidence: isKnownDecision ? score : +(1 - score).toFixed(3),
+    score: score,
+    open_set_score: score,
+    anomaly_score: +(1 - score).toFixed(3),
+    threshold: tau,
+    margin_to_threshold: +(tau - minDistance).toFixed(3),
+    method_used: 'Deep Metric Learning',
+    mode: 'calibrated_demonstration',
+    inference_time_ms: 18.2,
+    distances,
+    centroid_distances: Object.fromEntries(distances.map((d) => [d.class_name, d.distance])),
+    showdown: {
+      dml: {
+        method: 'Deep Metric Learning',
         decision: dmlKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-        showdown: {
-          dml: {
-            ...prev.showdown.dml,
-            threshold: safeThresh,
-            is_known: dmlKnown,
-            decision: dmlKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-            explanation: dmlKnown
-              ? `Distance (${minDistance.toFixed(2)}) is inside decision radius (tau = ${safeThresh.toFixed(2)}).`
-              : `Distance (${minDistance.toFixed(2)}) exceeds decision radius (tau = ${safeThresh.toFixed(2)}). Anomaly rejected.`
-          },
-          svdd: {
-            ...prev.showdown.svdd,
-            threshold: safeThresh,
-            is_known: svddKnown,
-            decision: svddKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-            explanation: svddKnown
-              ? `Distance (${svddDistance.toFixed(2)}) is inside hypersphere boundary (tau = ${safeThresh.toFixed(2)}).`
-              : `Distance (${svddDistance.toFixed(2)}) exceeds hypersphere boundary (tau = ${safeThresh.toFixed(2)}). Anomaly rejected.`
-          },
-          msp: {
-            ...prev.showdown.msp,
-            threshold: safeThresh,
-            is_known: mspKnown,
-            decision: mspKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
-            explanation: `Softmax probability (${mspScore.toFixed(3)}) ${mspKnown ? 'exceeds' : 'below'} threshold.`
-          }
-        }
-      };
+        verdict: dmlKnown ? `KNOWN: ${matchedClass.toUpperCase()}` : 'UNKNOWN / NOVEL OBJECT',
+        class: matchedClass,
+        predicted_class: dmlKnown ? matchedClass : 'REJECTED (ANOMALY)',
+        distance: minDistance,
+        score: score,
+        confidence: score,
+        anomaly_score: +(1 - score).toFixed(3),
+        is_known: dmlKnown,
+        threshold: tau,
+        explanation: dmlKnown
+          ? `Distance to centroid (${minDistance.toFixed(2)}) is inside decision radius (tau = ${tau.toFixed(2)}).`
+          : `Distance to centroid (${minDistance.toFixed(2)}) exceeds decision radius (tau = ${tau.toFixed(2)}). Anomaly rejected.`,
+      },
+      svdd: {
+        method: 'Deep SVDD',
+        decision: svddKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
+        verdict: svddKnown ? `KNOWN: ${matchedClass.toUpperCase()}` : 'UNKNOWN / NOVEL OBJECT',
+        class: matchedClass,
+        predicted_class: svddKnown ? matchedClass : 'REJECTED (ANOMALY)',
+        distance: svddDistance,
+        score: +(Math.max(0, 1 - svddDistance / 2)).toFixed(3),
+        confidence: +(Math.max(0, 1 - svddDistance / 2)).toFixed(3),
+        anomaly_score: +(svddDistance / 2).toFixed(3),
+        is_known: svddKnown,
+        threshold: tau,
+        explanation: svddKnown
+          ? `Distance to center (${svddDistance.toFixed(2)}) is inside hypersphere boundary (tau = ${tau.toFixed(2)}).`
+          : `Distance to center (${svddDistance.toFixed(2)}) exceeds hypersphere boundary (tau = ${tau.toFixed(2)}). Anomaly rejected.`,
+      },
+      msp: {
+        method: 'MSP Baseline',
+        decision: mspKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)',
+        verdict: mspKnown ? `KNOWN: ${matchedClass.toUpperCase()}` : 'REJECTED',
+        class: matchedClass,
+        predicted_class: mspKnown ? matchedClass : 'REJECTED',
+        distance: minDistance,
+        score: mspScore,
+        confidence: mspScore,
+        anomaly_score: +(1 - mspScore).toFixed(3),
+        is_known: mspKnown,
+        threshold: tau,
+        explanation: `Softmax probability (${mspScore.toFixed(3)}) ${mspKnown ? 'exceeds' : 'below'} threshold (tau = ${tau.toFixed(2)}).`,
+      },
+    },
+  };
+}
+
+export default function LiveDemo() {
+  const defaultTau = useSettings((s) => s.defaultTau);
+  const setLastLatencyMs = useEngine((s) => s.setLastLatencyMs);
+
+  const [presets, setPresets] = useState(FALLBACK_PRESETS);
+  const [selectedPreset, setSelectedPreset] = useState(FALLBACK_PRESETS[0]);
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(FALLBACK_PRESETS[0].src);
+  const [threshold, setThreshold] = useState(defaultTau);
+  const debouncedTau = useDebouncedValue(threshold, 250);
+
+  const [loading, setLoading] = useState(false);
+  const [slowNotice, setSlowNotice] = useState(false);
+  const [error, setError] = useState(null);
+  const [result, setResult] = useState(null);
+
+  const abortRef = useRef(null);
+  const objectUrlRef = useRef(null);
+
+  useEffect(() => {
+    fetchSampleManifest().then((items) => {
+      if (Array.isArray(items) && items.length > 0) {
+        setPresets(items);
+      }
     });
+    return () => {
+      if (abortRef.current) abortRef.current.abort();
+      if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    };
+  }, []);
 
-    // Sync with backend
-    if (selectedFile) {
-      executeInferenceFromFile(selectedFile, safeThresh);
-    } else {
-      executeInferenceFromUrl(previewUrl, safeThresh);
+  const executePredict = useCallback(
+    async (fileOrPreset, tau) => {
+      if (abortRef.current) {
+        abortRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      setLoading(true);
+      setSlowNotice(false);
+      setError(null);
+
+      const slowTimer = setTimeout(() => setSlowNotice(true), 3000);
+
+      try {
+        let file = fileOrPreset;
+        if (!(file instanceof File)) {
+          const res = await fetch(fileOrPreset.src, { signal: controller.signal });
+          const blob = await res.blob();
+          file = new File([blob], fileOrPreset.filename || 'sample.png', {
+            type: blob.type || 'image/png',
+          });
+        }
+
+        const data = await runPredict(file, tau, 'all', { signal: controller.signal });
+        if (controller.signal.aborted) return;
+
+        setResult(data);
+        if (typeof data?.inference_time_ms === 'number') {
+          setLastLatencyMs(data.inference_time_ms);
+        }
+      } catch (err) {
+        if (err?.name === 'AbortError' || controller.signal.aborted) return;
+        // Fall back to calibrated demonstration calculation so the full UI remains 100% operational
+        const fallback = getFallbackPrediction(fileOrPreset, tau);
+        setResult(fallback);
+        setLastLatencyMs(18.2);
+      } finally {
+        clearTimeout(slowTimer);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+          setSlowNotice(false);
+        }
+      }
+    },
+    [setLastLatencyMs]
+  );
+
+  // Trigger inference whenever preset, uploadedFile, or debouncedTau changes
+  useEffect(() => {
+    const target = uploadedFile || selectedPreset;
+    if (target) {
+      executePredict(target, debouncedTau);
     }
+  }, [uploadedFile, selectedPreset, debouncedTau, executePredict]);
+
+  const handlePresetClick = (preset) => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    setUploadedFile(null);
+    setSelectedPreset(preset);
+    setPreviewUrl(preset.src);
   };
 
-  const handleExportJson = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(prediction, null, 2));
-    const dlAnchorElem = document.createElement('a');
-    dlAnchorElem.setAttribute('href', dataStr);
-    dlAnchorElem.setAttribute('download', `sonar_osr_result_${Date.now()}.json`);
-    dlAnchorElem.click();
+  const handleFileUpload = (file) => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+    }
+    const url = URL.createObjectURL(file);
+    objectUrlRef.current = url;
+    setUploadedFile(file);
+    setPreviewUrl(url);
   };
 
-  const activePreset = presets.find(p => p.path === previewUrl);
-  const isUnknownActive = activePreset ? !activePreset.known : (previewUrl.includes('chain') || previewUrl.includes('valve') || previewUrl.includes('shampoo'));
+  const handleClearUpload = () => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    setUploadedFile(null);
+    setPreviewUrl(selectedPreset.src);
+  };
+
+  const handleExport = () => {
+    if (!result) return;
+    downloadJson(result, `sonar_osr_result_${Date.now()}.json`);
+  };
+
+  const distances = normalizeDistances(result);
+  const predictedClass = result?.predicted_class || result?.class || result?.top_known_match || '—';
+  const isKnown = Boolean(result?.is_known);
+  const mode = result?.mode;
+
+  const modeBadge = error ? (
+    <Badge tone="bad">Backend offline</Badge>
+  ) : mode === 'live_pytorch' ? (
+    <Badge tone="good">Live model</Badge>
+  ) : mode === 'calibrated_demonstration' ? (
+    <Badge tone="warn" title="Backend model weights not loaded; verdict uses calibrated demonstration mode.">
+      Demo mode — verdict is not computed from the image
+    </Badge>
+  ) : null;
+
+  const showdown = result?.showdown || {};
+  const showdownCards = [
+    { key: 'dml', title: 'Deep Metric Learning (DML)', isDist: true },
+    { key: 'svdd', title: 'Deep SVDD (Hypersphere)', isDist: true },
+    { key: 'msp', title: 'Baseline MSP (Softmax)', isDist: false },
+  ];
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Live Open-Set Acoustic Inference</h1>
-        <p className="page-desc">
-          Test real forward-looking sonar echograms against our 3 paradigms. Adjust the decision threshold radius τ 
-          to observe how metric hyperspheres reject unseen marine anomalies while retaining known class accuracy.
-        </p>
-      </div>
+      <PageHeader
+        title="Live Open-Set Inference"
+        subtitle="Test ARIS Explorer 3000 acoustic echograms across DML, Deep SVDD, and Baseline MSP"
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            <EngineStatus compact />
+            {modeBadge}
+          </div>
+        }
+        onDownload={result ? handleExport : undefined}
+        downloadLabel="Export JSON"
+      />
 
-      <div className="grid-sidebar">
-        {/* Left Control Sidebar */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {/* Preset Buttons */}
-          <div className="glass--card" style={{ padding: '18px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '10px' }}>Test echo presets</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--highlight-green)', fontWeight: 500, margin: '4px 0 2px' }}>
-                Known classes (trained)
-              </div>
-              {presets.filter(p => p.known).map(p => (
-                <button
-                  key={p.path}
-                  className={`btn ${previewUrl === p.path ? 'btn-primary' : 'btn-outline'}`}
-                  style={{ justifyContent: 'flex-start', fontSize: '12px', padding: '6px 10px' }}
-                  onClick={() => handlePresetSelect(p)}
-                >
-                  <ShieldCheck size={14} strokeWidth={1.5} style={{ color: previewUrl === p.path ? 'var(--text-bright)' : 'var(--highlight-green)' }} />
-                  {p.label}
-                </button>
-              ))}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        {/* Left Column: Input Controls */}
+        <div className="xl:col-span-5 space-y-5">
+          <Card>
+            <CardHeader
+              title="1. Select Sample Echogram"
+              subtitle="4 known classes & 3 held-out unknown anomalies"
+            />
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-2 gap-2.5">
+              {presets.map((p) => {
+                const active = !uploadedFile && selectedPreset?.src === p.src;
+                return (
+                  <button
+                    key={p.src}
+                    type="button"
+                    onClick={() => handlePresetClick(p)}
+                    className={cn(
+                      'flex items-center gap-2.5 p-2 rounded-control border text-left transition-all',
+                      active
+                        ? 'border-primary bg-primary-soft/60 ring-2 ring-primary/15'
+                        : 'border-line bg-soft/50 hover:bg-hover'
+                    )}
+                  >
+                    <img
+                      src={p.src}
+                      alt={p.label}
+                      className="w-10 h-10 rounded-lg object-cover bg-[#0B1120] shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <div className="text-xs font-semibold text-ink truncate">
+                        {p.class}
+                      </div>
+                      <div
+                        className={cn(
+                          'text-[10px] font-medium',
+                          p.is_known ? 'text-good' : 'text-bad'
+                        )}
+                      >
+                        {p.is_known ? 'Known' : 'Unknown'}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
 
-              <div style={{ fontSize: '11px', color: 'var(--alert-red)', fontWeight: 500, margin: '8px 0 2px' }}>
-                Unknown anomalies (unseen)
-              </div>
-              {presets.filter(p => !p.known).map(p => (
+            <div className="mt-4 pt-4 border-t border-line">
+              <Dropzone
+                onFile={handleFileUpload}
+                fileName={uploadedFile?.name}
+                onClear={uploadedFile ? handleClearUpload : undefined}
+              />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader
+              title="2. Operating Threshold (τ)"
+              subtitle="Controls open-set rejection sensitivity"
+              right={
+                <span className="font-mono text-sm font-bold text-primary tabular-nums">
+                  τ = {threshold.toFixed(2)}
+                </span>
+              }
+            />
+
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={threshold}
+              onChange={(e) => setThreshold(Number(e.target.value))}
+              aria-label="Open-set decision threshold tau"
+              className="sonar-slider"
+            />
+
+            <div className="flex items-center gap-2 mt-4">
+              {[0.2, 0.5, 0.8].map((presetTau) => (
                 <button
-                  key={p.path}
-                  className={`btn ${previewUrl === p.path ? 'btn-primary' : 'btn-outline'}`}
-                  style={{ justifyContent: 'flex-start', fontSize: '12px', padding: '6px 10px' }}
-                  onClick={() => handlePresetSelect(p)}
+                  key={presetTau}
+                  type="button"
+                  onClick={() => setThreshold(presetTau)}
+                  className={cn(
+                    'flex-1 py-1.5 rounded-control text-xs font-mono font-semibold border transition-colors',
+                    Math.abs(threshold - presetTau) < 0.01
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-soft text-ink-2 border-line hover:bg-hover'
+                  )}
                 >
-                  <ShieldAlert size={14} strokeWidth={1.5} style={{ color: previewUrl === p.path ? 'var(--text-bright)' : 'var(--alert-red)' }} />
-                  {p.label}
+                  τ = {presetTau.toFixed(2)}
                 </button>
               ))}
             </div>
-          </div>
+          </Card>
 
-          {/* Upload Dropzone */}
-          <div className="glass--card" style={{ padding: '18px', textAlign: 'center' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px' }}>Upload custom echogram</div>
-            <label style={{
-              display: 'block',
-              border: '2px dashed var(--glass-border)',
-              borderRadius: 'var(--radius-control)',
-              padding: '20px 12px',
-              cursor: 'pointer',
-              background: 'rgba(255, 255, 255, 0.03)',
-              transition: 'border-color 0.2s'
-            }}>
-              <Upload size={24} style={{ color: 'var(--glow-cyan)', margin: '0 auto 8px' }} />
-              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                Drop PNG / JPG sonar crop or <span style={{ color: 'var(--glow-cyan)' }}>browse</span>
+          <Card>
+            <CardHeader
+              title="3. Sensor Input & Preprocessed View"
+              subtitle="Median 3×3 speckle filter + CLAHE"
+            />
+            {result?.preprocessed_thumbnail ? (
+              <BeforeAfter
+                beforeSrc={previewUrl}
+                afterSrc={result.preprocessed_thumbnail}
+                beforeLabel="Raw Sonar"
+                afterLabel="CLAHE + Median"
+                height={220}
+              />
+            ) : (
+              <div className="h-[220px] rounded-control bg-[#0B1120] border border-line flex items-center justify-center overflow-hidden">
+                <img
+                  src={previewUrl}
+                  alt="Selected sonar echogram"
+                  className="max-h-full max-w-full object-contain"
+                />
               </div>
-              <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
-            </label>
-          </div>
-
-          {/* Strictness Control Presets (Section 3 Page 2: Defense, Balanced, High-recall) */}
-          <div className="glass--card" style={{ padding: '18px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 500, marginBottom: '10px', color: 'var(--text-bright)' }}>Strictness presets</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <button
-                className={`btn ${Math.abs(threshold - 0.20) < 0.03 ? 'btn-primary' : 'btn-outline'}`}
-                style={{ fontSize: '12px', padding: '7px 10px', justifyContent: 'space-between' }}
-                onClick={() => handleThresholdChange(0.20)}
-              >
-                <span>Defense (high rejection)</span>
-                <span className="font-mono tabular-nums">τ = 0.20</span>
-              </button>
-              <button
-                className={`btn ${Math.abs(threshold - 0.50) < 0.03 ? 'btn-primary' : 'btn-outline'}`}
-                style={{ fontSize: '12px', padding: '7px 10px', justifyContent: 'space-between' }}
-                onClick={() => handleThresholdChange(0.50)}
-              >
-                <span>Balanced (Youden's J)</span>
-                <span className="font-mono tabular-nums">τ = 0.50</span>
-              </button>
-              <button
-                className={`btn ${Math.abs(threshold - 0.80) < 0.03 ? 'btn-primary' : 'btn-outline'}`}
-                style={{ fontSize: '12px', padding: '7px 10px', justifyContent: 'space-between' }}
-                onClick={() => handleThresholdChange(0.80)}
-              >
-                <span>High-recall target</span>
-                <span className="font-mono tabular-nums">τ = 0.80</span>
-              </button>
-            </div>
-          </div>
+            )}
+          </Card>
         </div>
 
-        {/* Main Content Area */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {/* Query Image & Dynamic Threshold Header */}
-          <div className="glass--card">
-            <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '24px', alignItems: 'center' }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ background: '#000', borderRadius: 'var(--radius-sm)', padding: '6px', border: '1px solid var(--border-subtle)', height: '140px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img src={previewUrl} alt="Query Echo" style={{ maxHeight: '128px', maxWidth: '100%', objectFit: 'contain' }} />
-                </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Input sonar echogram</div>
-              </div>
+        {/* Right Column: Inference Verdict & Showdown */}
+        <div className="xl:col-span-7 space-y-5">
+          {error && (
+            <ErrorBanner
+              title="Engine offline or request failed"
+              message={`${error} Start the FastAPI backend (start_all.bat) or retry.`}
+              onRetry={() => executePredict(uploadedFile || selectedPreset, threshold)}
+            />
+          )}
 
-              <div>
-                <div className="slider-group">
-                  <div className="slider-label">
-                    <span style={{ fontWeight: 500, color: 'var(--text-bright)' }}>Decision radius threshold (τ)</span>
-                    <span className="slider-val tabular-nums" style={{ fontSize: '18px' }}>{threshold.toFixed(2)}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0.10"
-                    max="1.50"
-                    step="0.01"
-                    value={threshold}
-                    onChange={(e) => handleThresholdChange(parseFloat(e.target.value))}
-                  />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                    <span>0.10 (Strict hyperspheres)</span>
-                    <span>0.50 (Calibrated baseline)</span>
-                    <span>1.50 (Permissive boundary)</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', gap: '16px', marginTop: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                    Latency: <strong className="font-mono tabular-nums" style={{ color: 'var(--text-bright)' }}>{prediction.inference_time_ms || 18.2} ms</strong>
-                  </div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                    Target class: <strong style={{ color: isUnknownActive ? 'var(--semantic-negative)' : 'var(--semantic-positive)', textTransform: 'capitalize' }}>
-                      {prediction.predicted_class} {isUnknownActive ? '(Unseen anomaly)' : '(Known debris)'}
-                    </strong>
-                  </div>
-                  <button className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '12px', marginLeft: 'auto' }} onClick={handleExportJson}>
-                    <Download size={13} strokeWidth={1.5} /> Export JSON
-                  </button>
-                </div>
+          {loading && !result && (
+            <div className="space-y-4">
+              <Skeleton className="h-32 rounded-card" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Skeleton className="h-48 rounded-card" />
+                <Skeleton className="h-48 rounded-card" />
+                <Skeleton className="h-48 rounded-card" />
               </div>
+              <Skeleton className="h-64 rounded-card" />
             </div>
-          </div>
+          )}
 
-          {/* 3-Paradigm Showdown Section (Tier 1 Glass Shell holding Inset plates) */}
-          <div className="glass" style={{ padding: '22px' }}>
-            <div className="card-header">
-              <div>
-                <h3 className="card-title">
-                  <Cpu size={16} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
-                  3-paradigm architectural showdown
-                </h3>
-                <p className="card-subtitle">Direct side-by-side verdict comparison on the exact same acoustic echogram</p>
-              </div>
+          {slowNotice && loading && (
+            <div className="text-xs text-ink-muted flex items-center gap-2 px-2">
+              <Clock size={14} className="animate-spin" />
+              <span>Still working on inference…</span>
             </div>
+          )}
 
-            <div className="grid-3">
-              {/* Paradigm 1: DML */}
-              <div className="inset" style={{ padding: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>Deep metric learning (DML)</span>
-                  <span className={prediction.showdown?.dml?.is_known ? 'badge badge-known' : 'badge badge-unknown'}>
-                    {prediction.showdown?.dml?.is_known ? 'Known' : 'Rejected'}
-                  </span>
-                </div>
-
-                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.dml?.is_known ? 'var(--highlight-green)' : 'var(--alert-red)', marginBottom: '4px' }}>
-                  {prediction.showdown?.dml?.decision}
-                </div>
-
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                  Class: <strong style={{ color: 'var(--text-bright)', textTransform: 'capitalize' }}>
-                    {prediction.showdown?.dml?.class || prediction.predicted_class || 'bottle'}
-                  </strong>
-                </div>
-
-                <MarginGauge
-                  distance={prediction.showdown?.dml?.distance ?? 0.28}
-                  threshold={threshold}
-                  isKnown={prediction.showdown?.dml?.is_known}
-                  methodName="DML"
-                  isDistanceMetric={true}
-                />
-
-                <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '8px', lineHeight: 1.4 }}>
-                  {prediction.showdown?.dml?.explanation}
-                </div>
-              </div>
-
-              {/* Paradigm 2: One-Class SVDD */}
-              <div className="inset" style={{ padding: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>One-class SVDD (nearest centroid)</span>
-                  <span className={prediction.showdown?.svdd?.is_known ? 'badge badge-known' : 'badge badge-unknown'}>
-                    {prediction.showdown?.svdd?.is_known ? 'Known' : 'Rejected'}
-                  </span>
-                </div>
-
-                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.svdd?.is_known ? 'var(--highlight-green)' : 'var(--alert-red)', marginBottom: '4px' }}>
-                  {prediction.showdown?.svdd?.decision}
-                </div>
-
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                  Class: <strong style={{ color: 'var(--text-bright)', textTransform: 'capitalize' }}>
-                    {prediction.showdown?.svdd?.class || prediction.predicted_class || 'bottle'}
-                  </strong>
-                </div>
-
-                <MarginGauge
-                  distance={prediction.showdown?.svdd?.distance ?? 0.31}
-                  threshold={threshold}
-                  isKnown={prediction.showdown?.svdd?.is_known}
-                  methodName="SVDD"
-                  isDistanceMetric={true}
-                />
-
-                <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '8px', lineHeight: 1.4 }}>
-                  {prediction.showdown?.svdd?.explanation}
-                </div>
-              </div>
-
-              {/* Paradigm 3: Baseline MSP */}
-              <div className="inset" style={{ padding: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>Baseline MSP</span>
-                  <span className={isUnknownActive && prediction.showdown?.msp?.is_known ? 'badge badge-warning' : (prediction.showdown?.msp?.is_known ? 'badge badge-known' : 'badge badge-unknown')}>
-                    {isUnknownActive && prediction.showdown?.msp?.is_known ? 'False alarm' : (prediction.showdown?.msp?.is_known ? 'Known' : 'Rejected')}
-                  </span>
-                </div>
-
-                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.msp?.is_known ? (isUnknownActive ? 'var(--semantic-warning)' : 'var(--highlight-green)') : 'var(--alert-red)', marginBottom: '4px' }}>
-                  {prediction.showdown?.msp?.decision}
-                </div>
-
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                  Class: <strong style={{ color: 'var(--text-bright)', textTransform: 'capitalize' }}>
-                    {prediction.showdown?.msp?.class || prediction.predicted_class || 'bottle'}
-                  </strong>
-                </div>
-
-                <MarginGauge
-                  score={prediction.showdown?.msp?.score ?? 0.95}
-                  threshold={threshold}
-                  isKnown={prediction.showdown?.msp?.is_known}
-                  methodName="MSP"
-                  isDistanceMetric={false}
-                />
-
-                <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '8px', lineHeight: 1.4 }}>
-                  {isUnknownActive && prediction.showdown?.msp?.is_known ? (
-                    <div style={{ color: 'var(--semantic-warning)', background: 'var(--semantic-warning-subtle)', padding: '6px 8px', borderRadius: '4px', border: '1px solid rgba(245,158,11,0.25)', marginTop: '4px' }}>
-                      Warning: Softmax assigned high certainty to an unseen unknown anomaly
-                    </div>
-                  ) : (
-                    'Unbounded linear hyperplane classifier without radial compactness'
+          {result && (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${result.verdict}-${predictedClass}-${result.threshold}`}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18 }}
+                className="space-y-5"
+              >
+                {/* Verdict Hero */}
+                <Card
+                  aria-live="polite"
+                  className={cn(
+                    'border-2',
+                    isKnown ? 'border-good/40 bg-good-soft/30' : 'border-bad/40 bg-bad-soft/30'
                   )}
-                </div>
-              </div>
-            </div>
-          </div>
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={cn(
+                          'w-14 h-14 rounded-2xl flex items-center justify-center shrink-0',
+                          isKnown ? 'bg-good text-white' : 'bg-bad text-white'
+                        )}
+                      >
+                        {isKnown ? <ShieldCheck size={28} /> : <ShieldAlert size={28} />}
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
+                          Open-Set Decision ({result.method_used || 'DML'})
+                        </div>
+                        <div className="text-2xl font-bold text-ink mt-0.5">
+                          {isKnown ? `KNOWN · ${predictedClass.toUpperCase()}` : 'UNKNOWN (REJECTED)'}
+                        </div>
+                        <div className="text-xs text-ink-2 mt-1">
+                          Closest match: <strong>{result.top_known_match || predictedClass}</strong> · Score{' '}
+                          <span className="font-mono font-semibold">
+                            {Number(result.confidence ?? result.open_set_score ?? result.score ?? 0).toFixed(3)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-          {/* Centroid Distance Bar Chart */}
-          <CentroidRadar
-            distances={prediction.distances}
-            threshold={threshold}
-            predictedClass={prediction.predicted_class}
-            isKnown={prediction.is_known}
-          />
+                    <div className="flex items-center gap-3">
+                      {typeof result.inference_time_ms === 'number' && (
+                        <Badge tone="neutral" className="font-mono">
+                          {result.inference_time_ms.toFixed(1)} ms
+                        </Badge>
+                      )}
+                      <button
+                        type="button"
+                        onClick={handleExport}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control bg-card border border-line text-xs font-semibold text-ink hover:bg-soft transition-colors"
+                      >
+                        <Download size={13} />
+                        Export JSON
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Paradigm Showdown */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {showdownCards.map((cfg) => {
+                    const item = showdown[cfg.key];
+                    if (!item) return null;
+                    const itemKnown = Boolean(item.is_known);
+                    const dist = item.distance ?? result.anomaly_score;
+                    const score = item.score ?? item.confidence;
+                    return (
+                      <Card key={cfg.key} className="p-5 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <span className="text-xs font-semibold text-ink-muted">{cfg.title}</span>
+                          </div>
+                          <Badge tone={itemKnown ? 'good' : 'bad'} className="mb-3">
+                            {itemKnown ? 'KNOWN' : 'UNKNOWN (REJECTED)'}
+                          </Badge>
+
+                          <div className="text-sm font-bold text-ink mb-1">
+                            {item.predicted_class || item.class || predictedClass}
+                          </div>
+                          <p className="text-xs text-ink-muted leading-relaxed">
+                            {item.explanation}
+                          </p>
+                        </div>
+
+                        <MarginGauge
+                          score={score}
+                          distance={dist}
+                          threshold={Number(result.threshold ?? threshold)}
+                          isKnown={itemKnown}
+                          isDistanceMetric={cfg.isDist}
+                        />
+                      </Card>
+                    );
+                  })}
+                </div>
+
+                {/* Centroid Distance Chart */}
+                {distances.length > 0 && (
+                  <CentroidBars
+                    distances={distances}
+                    threshold={Number(result.threshold ?? threshold)}
+                    predictedClass={predictedClass}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
       </div>
     </div>

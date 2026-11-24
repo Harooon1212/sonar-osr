@@ -1,190 +1,102 @@
-/* ==========================================================================
-   SonarOSR Dual-Theme Design Tokens
-   Production Specification: Slate Edition (Dark) & Laboratory Edition (Light)
-   Department of Computer Science, Bahria University, Islamabad (FYP 2026)
-   ========================================================================== */
-
-:root {
-  /* Typography */
-  --font-headings: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-  --font-heading:  'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-  --font-sans:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:     'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-
-  /* Global Radii: Precision Structural Shapes */
-  --radius-panel:   16px;
-  --radius-card:    12px;
-  --radius-control: 8px;
-  --radius-pill:    9999px;
-
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-
-  /* Motion & Easing */
-  --ease-tactical: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-}
-
-/* ==========================================================================
-   THEME 1: SLATE EDITION (DARK) - Military Charcoal & Platinum Glass
-   Default active theme
-   ========================================================================== */
 :root,
-[data-theme="slate"],
-.theme-slate {
-  /* Canvas & Foundations */
-  --bg-base: #0C0E12;
-  --bg-surface: #13161C;
-  --bg-elevated: #1A1D24;
-  --bg-inset: #070B14;
-  --border-subtle: #222630;
-  --border-medium: #2E3442;
-  --border-strong: rgba(255, 255, 255, 0.16);
+[data-theme="light"] {
+  --bg-page: #F8F8F8;
+  --bg-frame: #FFFFFF;
+  --bg-sidebar: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-soft: #F3F5F9;
+  --bg-hover: #F4F6FA;
 
-  /* Typography / Ink */
-  --text-main: #F1F5F9;
-  --text-muted: #94A3B8; /* >6.9:1 on --bg-surface (Strict AA) */
-  --text-faint: #64748B;
-  --text-bright: #FFFFFF;
-  --text-inverse: #0C0E12;
+  --ink: #0B0B0F;
+  --ink-2: #3B3B3B;
+  --ink-muted: #8A8F98;
+  --ink-faint: #B7BBC4;
 
-  /* Glass Tiers */
-  --glass-1-bg: rgba(19, 22, 28, 0.72);
-  --glass-1-blur: 16px;
-  --glass-2-bg: rgba(22, 26, 35, 0.78);
-  --glass-2-blur: 20px;
-  --glass-3-bg: rgba(26, 29, 36, 0.90);
-  --glass-3-blur: 24px;
-  --glass-data-bg: #11141A;
-  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.10);
-  --glass-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-border-strong: rgba(255, 255, 255, 0.22);
+  --line: #ECEEF2;
+  --line-strong: #DCE1EA;
 
-  /* Apple Liquid Glass Tokens (Reference: Liquid Gel Capsule) */
-  --liquid-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
-  --liquid-glass-border: rgba(255, 255, 255, 0.25);
-  --liquid-glass-highlight: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.60), inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.35);
-  --liquid-glass-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.60), 0 2px 8px rgba(0, 0, 0, 0.30);
-  --liquid-circle-bg: #000000;
-  --liquid-circle-text: #FFFFFF;
+  --primary: #2F6BFF;
+  --primary-hover: #2457DB;
+  --primary-soft: #E8EEFF;
+  --primary-grad: linear-gradient(180deg, #6FA1FF 0%, #2F6BFF 100%);
+  --primary-track: #EEF3FF;
 
-  /* Accents & Functional Indicators */
-  --accent-primary: #F1F5F9;
-  --accent-primary-text: #0C0E12;
-  --accent-blue: #1E293B;
-  --glow-cyan: #38BDF8;
-  --glow-cyan-soft: #60A5FA;
-  
-  --highlight-green: #34D399;
-  --status-safe-bg: rgba(16, 185, 129, 0.12);
-  --status-safe-border: rgba(16, 185, 129, 0.35);
-  --status-safe-text: #34D399;
+  --good: #16C784;
+  --good-soft: #E7F9F1;
+  --good-track: #DDF8EA;
+  --good-grad: linear-gradient(90deg, #7ED957 0%, #2EE59D 100%);
 
-  --alert-red: #F87171;
-  --status-alert-bg: rgba(239, 68, 68, 0.12);
-  --status-alert-border: rgba(239, 68, 68, 0.35);
-  --status-alert-text: #F87171;
+  --bad: #FF4D2E;
+  --bad-soft: #FFF0ED;
+  --bad-track: #FFE1E3;
+  --bad-grad: linear-gradient(90deg, #FFB02E 0%, #FF4D4F 100%);
 
-  --status-neutral-bg: rgba(148, 163, 184, 0.08);
-  --status-neutral-border: rgba(148, 163, 184, 0.20);
-  --status-neutral-text: #94A3B8;
+  --warn: #F59E0B;
+  --warn-soft: #FEF3C7;
 
-  --shadow-purple: #A855F7;
-  --semantic-warning: #F59E0B;
-  --semantic-warning-subtle: rgba(245, 158, 11, 0.12);
-  --semantic-positive: #34D399;
-  --semantic-positive-subtle: rgba(16, 185, 129, 0.12);
-  --semantic-negative: #F87171;
-  --semantic-negative-subtle: rgba(239, 68, 68, 0.12);
+  --radius-frame: 48px;
+  --radius-sidebar: 40px;
+  --radius-card: 32px;
+  --radius-pill: 28px;
+  --radius-control: 16px;
 
-  /* Radar & Phosphor Telemetry */
-  --radar-bg: #070B14;
-  --radar-rings: rgba(148, 163, 184, 0.15);
-  --radar-sweep-start: rgba(241, 245, 249, 0.22);
-  --radar-sweep-end: rgba(241, 245, 249, 0.0);
+  --shadow-frame: 0 24px 70px rgba(17, 24, 39, 0.06);
+  --shadow-card: 0 8px 30px rgba(17, 24, 39, 0.05);
+  --shadow-pop: 0 20px 60px rgba(17, 24, 39, 0.14);
+
+  --chart-grid: #ECEEF2;
+  --chart-axis: #8A8F98;
+  --chart-tooltip-bg: #FFFFFF;
+  --chart-tooltip-border: #ECEEF2;
 }
 
-/* ==========================================================================
-   THEME 2: LABORATORY EDITION (LIGHT) - Sterile Research Console
-   ========================================================================== */
-[data-theme="light"],
-.theme-light {
-  /* Canvas & Foundations */
-  --bg-base: #F8F9FF;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #F1F4F9;
-  --bg-inset: #0B0F19; /* Dedicated acoustic instrument darkroom inset */
-  --border-subtle: #E2E8F0;
-  --border-medium: #CBD5E1;
-  --border-strong: rgba(15, 23, 42, 0.22);
+[data-theme="dark"] {
+  --bg-page: #050505;
+  --bg-frame: #0D0D0D;
+  --bg-sidebar: #111111;
+  --bg-card: #161616;
+  --bg-soft: #1F1F22;
+  --bg-hover: #27272A;
 
-  /* Typography / Ink */
-  --text-main: #0F172A;
-  --text-muted: #475569; /* >7.0:1 on --bg-surface (Strict AAA) */
-  --text-faint: #94A3B8;
-  --text-bright: #0F172A;
-  --text-inverse: #FFFFFF;
+  --ink: #FFFFFF;
+  --ink-2: #D4D4D8;
+  --ink-muted: #A1A1AA;
+  --ink-faint: #71717A;
 
-  /* Glass Tiers */
-  --glass-1-bg: rgba(255, 255, 255, 0.88);
-  --glass-1-blur: 14px;
-  --glass-2-bg: rgba(255, 255, 255, 0.94);
-  --glass-2-blur: 16px;
-  --glass-3-bg: rgba(255, 255, 255, 0.98);
-  --glass-3-blur: 20px;
-  --glass-data-bg: #FFFFFF;
-  --glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --glass-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-  --glass-border: rgba(15, 23, 42, 0.10);
-  --glass-border-strong: rgba(15, 23, 42, 0.20);
+  --line: #27272A;
+  --line-strong: #3F3F46;
 
-  /* Apple Liquid Glass Tokens (Reference: Liquid Gel Capsule) */
-  --liquid-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.60) 100%);
-  --liquid-glass-border: rgba(255, 255, 255, 0.95);
-  --liquid-glass-highlight: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1.0), inset 0 -1.5px 2px 0 rgba(15, 23, 42, 0.08);
-  --liquid-glass-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.14), 0 2px 8px rgba(15, 23, 42, 0.06);
-  --liquid-circle-bg: #0F172A;
-  --liquid-circle-text: #FFFFFF;
+  --primary: #F4F4F5;
+  --primary-hover: #FFFFFF;
+  --primary-soft: rgba(255, 255, 255, 0.11);
+  --primary-grad: linear-gradient(180deg, #E4E4E7 0%, #A1A1AA 100%);
+  --primary-track: #27272A;
 
-  /* Accents & Functional Indicators */
-  --accent-primary: #0F172A;       /* Deep slate CTA fill */
-  --accent-primary-text: #FFFFFF;  /* Crisp white text */
-  --accent-blue: #0F172A;
-  --glow-cyan: #0284C7;
-  --glow-cyan-soft: #38BDF8;
+  --good: #22D392;
+  --good-soft: rgba(34, 211, 146, 0.14);
+  --good-track: #1A2E26;
+  --good-grad: linear-gradient(90deg, #7ED957 0%, #2EE59D 100%);
 
-  --highlight-green: #059669;
-  --status-safe-bg: #ECFDF5;
-  --status-safe-border: #A7F3D0;
-  --status-safe-text: #065F46;
+  --bad: #FF5A43;
+  --bad-soft: rgba(255, 90, 67, 0.14);
+  --bad-track: #331B19;
+  --bad-grad: linear-gradient(90deg, #FFB02E 0%, #FF4D4F 100%);
 
-  --alert-red: #DC2626;
-  --status-alert-bg: #FEF2F2;
-  --status-alert-border: #FECACA;
-  --status-alert-text: #991B1B;
+  --warn: #FBBF24;
+  --warn-soft: rgba(251, 191, 36, 0.14);
 
-  --status-neutral-bg: #F1F5F9;
-  --status-neutral-border: #E2E8F0;
-  --status-neutral-text: #475569;
+  --radius-frame: 48px;
+  --radius-sidebar: 40px;
+  --radius-card: 32px;
+  --radius-pill: 28px;
+  --radius-control: 16px;
 
-  --shadow-purple: #7C3AED;
-  --semantic-warning: #D97706;
-  --semantic-warning-subtle: #FFFBEB;
-  --semantic-positive: #059669;
-  --semantic-positive-subtle: #ECFDF5;
-  --semantic-negative: #DC2626;
-  --semantic-negative-subtle: #FEF2F2;
+  --shadow-frame: 0 24px 70px rgba(0, 0, 0, 0.75);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --shadow-pop: 0 20px 60px rgba(0, 0, 0, 0.75);
 
-  /* Radar Scope within Light Mode: Stays darkroom-grade acoustic inset */
-  --radar-bg: #070B14;
-  --radar-rings: rgba(255, 255, 255, 0.12);
-  --radar-sweep-start: rgba(56, 189, 248, 0.25);
-  --radar-sweep-end: rgba(56, 189, 248, 0.0);
+  --chart-grid: #27272A;
+  --chart-axis: #A1A1AA;
+  --chart-tooltip-bg: #161616;
+  --chart-tooltip-border: #3F3F46;
 }

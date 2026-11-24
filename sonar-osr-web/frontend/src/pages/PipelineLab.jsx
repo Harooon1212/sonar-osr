@@ -1,32 +1,34 @@
 import React, { useState } from 'react';
-import NoiseLab from '../components/simulation/NoiseLab';
-import PhysicsInspector from '../components/simulation/PhysicsInspector';
-import AuvPatrol from '../components/simulation/AuvPatrol';
 import { Sliders, Layers, Compass } from 'lucide-react';
+import PageHeader from '../layout/PageHeader';
+import Tabs from '../ui/Tabs';
+import NoiseLab from '../features/lab/NoiseLab';
+import PhysicsInspector from '../features/lab/PhysicsInspector';
+import AuvPatrol from '../features/lab/AuvPatrol';
+
+const LAB_TABS = [
+  { id: 'noise', label: 'Ocean Noise & Speckle', icon: Sliders },
+  { id: 'physics', label: 'Highlight & Shadow', icon: Layers },
+  { id: 'auv', label: 'AUV Patrol Simulator', icon: Compass },
+];
 
 export default function PipelineLab() {
   const [labTab, setLabTab] = useState('noise');
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Acoustic physics and ocean simulation lab</h1>
-        <p className="page-desc">
-          Interactive testbench for underwater sonar phenomenology: Rayleigh speckle injection, acoustic shadow physics, and AUV mission simulation.
-        </p>
-      </div>
-
-      <div className="tabs">
-        <button className={`tab-btn ${labTab === 'noise' ? 'active' : ''}`} onClick={() => setLabTab('noise')}>
-          <Sliders size={15} strokeWidth={1.5} /> Ocean noise & speckle workbench
-        </button>
-        <button className={`tab-btn ${labTab === 'physics' ? 'active' : ''}`} onClick={() => setLabTab('physics')}>
-          <Layers size={15} strokeWidth={1.5} /> Highlight & shadow decomposer
-        </button>
-        <button className={`tab-btn ${labTab === 'auv' ? 'active' : ''}`} onClick={() => setLabTab('auv')}>
-          <Compass size={15} strokeWidth={1.5} /> AUV seabed patrol simulator
-        </button>
-      </div>
+      <PageHeader
+        title="Pipeline Lab"
+        subtitle="Interactive acoustic testbench for Rayleigh speckle, shadow physics, and AUV patrol simulation"
+        action={
+          <Tabs
+            layoutId="pipeline-lab-tabs"
+            tabs={LAB_TABS}
+            value={labTab}
+            onChange={setLabTab}
+          />
+        }
+      />
 
       {labTab === 'noise' && <NoiseLab />}
       {labTab === 'physics' && <PhysicsInspector />}

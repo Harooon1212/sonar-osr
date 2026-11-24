@@ -1,145 +1,110 @@
 import React from 'react';
-import { GraduationCap, Code2, Users, BookOpen, Quote } from 'lucide-react';
+import { GraduationCap, Code2, Users, BookOpen } from 'lucide-react';
+import PageHeader from '../layout/PageHeader';
+import { Card, CardHeader } from '../ui/Card';
 
 export default function About() {
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Final year project and research team</h1>
-        <p className="page-desc">
-          Open-Set Recognition (OSR) for Underwater Forward-Looking Sonar (FLS) Imagery &bull; Department of Computer Science &bull; Bahria University, Islamabad
-        </p>
-      </div>
+      <PageHeader
+        title="Final Year Project & Research Team"
+        subtitle="Open-Set Recognition (OSR) for Underwater Forward-Looking Sonar Imagery · Bahria University, Islamabad"
+      />
 
-      <div className="grid-sidebar">
-        {/* Left Sidebar: University & Technical Specs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div className="glass--card" style={{ textAlign: 'center', padding: '24px 18px' }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              margin: '0 auto 16px',
-              borderRadius: 'var(--radius-control)',
-              background: 'var(--accent-blue)',
-              border: '1px solid rgba(56, 189, 248, 0.4)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: 'var(--glass-edge)'
-            }}>
-              <GraduationCap size={28} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-4 space-y-5">
+          <Card className="text-center">
+            <div className="w-14 h-14 rounded-2xl bg-primary-soft text-primary flex items-center justify-center mx-auto mb-4">
+              <GraduationCap size={28} />
             </div>
+            <h3 className="text-base font-bold text-ink">Bahria University</h3>
+            <div className="text-xs text-ink-muted">Islamabad Campus (E-8)</div>
+            <div className="text-xs text-ink-faint mt-0.5">Department of Computer Science</div>
 
-            <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '2px', color: 'var(--text-bright)' }}>Bahria University</h3>
-            <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Islamabad Campus (E-8)</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-faint)', marginTop: '4px' }}>
-              Department of Computer Science
+            <div className="mt-5 pt-4 border-t border-line text-left space-y-2 text-xs text-ink-2">
+              <div><strong className="text-ink">Degree:</strong> BS Computer Science (BSCS)</div>
+              <div><strong className="text-ink">Domain:</strong> Underwater Acoustic Robotics &amp; Vision</div>
+              <div><strong className="text-ink">Year:</strong> 2026 Final Year Project</div>
             </div>
+          </Card>
 
-            <div style={{ marginTop: '20px', borderTop: '1px solid var(--glass-border)', paddingTop: '16px', textAlign: 'left', fontSize: '12px', color: 'var(--text-muted)' }}>
-              <div><strong style={{ color: 'var(--text-bright)' }}>Degree:</strong> BS Computer Science (BSCS)</div>
-              <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-bright)' }}>Domain:</strong> Underwater Acoustic Robotics & Vision</div>
-              <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-bright)' }}>Year:</strong> 2026 Final Year Project</div>
-            </div>
-          </div>
-
-          <div className="glass--card">
-            <div style={{ fontSize: '13px', fontWeight: 500, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-bright)' }}>
-              <Code2 size={16} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
-              Technology stack
-            </div>
-            <ul style={{ fontSize: '12px', color: 'var(--text-muted)', listStyle: 'none', lineHeight: 1.8 }}>
-              <li>&bull; <strong style={{ color: 'var(--text-bright)' }}>Frontend:</strong> React 18, Vite, D3.js (v7), Lucide Icons</li>
-              <li>&bull; <strong style={{ color: 'var(--text-bright)' }}>Styling:</strong> Glassmorphism token architecture</li>
-              <li>&bull; <strong style={{ color: 'var(--text-bright)' }}>Backend:</strong> FastAPI, PyTorch (CPU), Uvicorn</li>
-              <li>&bull; <strong style={{ color: 'var(--text-bright)' }}>Deep learning:</strong> ResNet-50, Triplet loss, Deep SVDD</li>
-              <li>&bull; <strong style={{ color: 'var(--text-bright)' }}>Acoustic sensor:</strong> ARIS Explorer 3000 (96 beams)</li>
+          <Card>
+            <CardHeader
+              title="Technology Stack"
+              right={<Code2 size={16} className="text-primary" />}
+            />
+            <ul className="space-y-2 text-xs text-ink-2 leading-relaxed">
+              <li><strong className="text-ink">Frontend:</strong> React 18, Vite 5, Tailwind CSS, Framer Motion, Recharts, D3.js, Zustand, KaTeX</li>
+              <li><strong className="text-ink">Backend:</strong> FastAPI, PyTorch, Uvicorn</li>
+              <li><strong className="text-ink">Deep Learning:</strong> ResNet-50, Triplet Loss (DML), Deep SVDD, MSP</li>
+              <li><strong className="text-ink">Sensor:</strong> Sound Metrics ARIS Explorer 3000</li>
             </ul>
-          </div>
+          </Card>
         </div>
 
-        {/* Right Content: Abstract, Team Members & Supervisor, Citations */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div className="glass--card">
-            <div className="card-header">
-              <h3 className="card-title">Research abstract and project scope</h3>
+        <div className="lg:col-span-8 space-y-5">
+          <Card>
+            <CardHeader title="Research Abstract & Project Scope" />
+            <div className="space-y-3 text-sm text-ink-2 leading-relaxed">
+              <p>
+                Autonomous Underwater Vehicles (AUVs) navigating murky subsea environments face severe limitations when using
+                optical cameras due to turbidity and light attenuation. Acoustic forward-looking sonar provides critical
+                long-range visibility, but traditional closed-set deep classifiers fail catastrophically by mistaking novel
+                obstacles, discarded marine clutter, and unexploded ordnances for known objects with high artificial confidence.
+              </p>
+              <p>
+                This research introduces a bounded metric space open-set recognition framework. By combining speckle-reduction
+                filtering, acoustic highlight/shadow physics decomposition, and semi-hard triplet metric learning, our system
+                achieves an <strong className="text-ink">AUROC of 0.9255</strong> on zero-shot anomaly detection, preventing
+                catastrophic false-accept decisions in autonomous subsea exploration.
+              </p>
             </div>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.7 }}>
-              Autonomous Underwater Vehicles (AUVs) navigating murky subsea environments face severe limitations 
-              when using optical sensors due to turbidity and light attenuation. Acoustic forward-looking sonar provides 
-              critical long-range visibility, but traditional closed-set deep classifiers fail catastrophically by 
-              mistaking novel obstacles, discarded marine clutter, and unexploded ordnances for known objects with 
-              dangerously high artificial confidence.
-            </p>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.7, marginTop: '12px' }}>
-              This research introduces a bounded metric space open-set recognition framework. By combining 
-              speckle-reduction filtering, acoustic highlight/shadow physics decomposition, and semi-hard triplet metric 
-              learning, our system achieves an <strong style={{ color: 'var(--text-bright)' }}>AUROC of 0.9255</strong> on zero-shot anomaly detection, 
-              preventing catastrophic false-accept decisions in autonomous subsea exploration.
-            </p>
-          </div>
+          </Card>
 
-          {/* Research Authors & Supervisor (from design.md) */}
-          <div className="glass--card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <Users size={16} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
-                Research team and supervision
-              </h3>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
-              <div className="inset" style={{ padding: '16px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--glow-cyan)', fontWeight: 500 }}>Project supervisor</div>
-                <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-bright)', marginTop: '4px' }}>
-                  Dr. Arif Ur Rahman
-                </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-faint)', marginTop: '2px' }}>
-                  Department of Computer Science &bull; Bahria University
-                </div>
+          <Card>
+            <CardHeader
+              title="Research Team & Supervision"
+              right={<Users size={16} className="text-primary" />}
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="p-4 rounded-control bg-soft border border-line">
+                <div className="text-[11px] font-semibold text-primary">Project Supervisor</div>
+                <div className="text-sm font-bold text-ink mt-1">Dr. Arif Ur Rahman</div>
+                <div className="text-xs text-ink-muted mt-0.5">Dept. of Computer Science · BUIC</div>
               </div>
+              <div className="p-4 rounded-control bg-soft border border-line">
+                <div className="text-[11px] font-semibold text-good">Student Researcher</div>
+                <div className="text-sm font-bold text-ink mt-1">Mohammad Khizar Hayat Cheema</div>
+                <div className="font-mono text-[11px] text-ink-muted mt-0.5">01-134231-039</div>
+              </div>
+              <div className="p-4 rounded-control bg-soft border border-line">
+                <div className="text-[11px] font-semibold text-good">Student Researcher</div>
+                <div className="text-sm font-bold text-ink mt-1">Muhammad Haroon</div>
+                <div className="font-mono text-[11px] text-ink-muted mt-0.5">01-134231-052</div>
+              </div>
+            </div>
+          </Card>
 
-              <div className="inset" style={{ padding: '16px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--highlight-green)', fontWeight: 500 }}>Student researcher</div>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-bright)', marginTop: '4px' }}>
-                  Mohammad Khizar Hayat Cheema
-                </div>
-                <div className="font-mono" style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '2px' }}>
-                  Enrollment: 01-134231-039
-                </div>
+          <Card>
+            <CardHeader
+              title="Academic References & Dataset Citations"
+              right={<BookOpen size={16} className="text-primary" />}
+            />
+            <div className="space-y-2.5 text-xs text-ink-2 leading-relaxed">
+              <div className="p-3 rounded-control bg-soft border border-line">
+                <strong className="text-ink">MD-FLS Dataset:</strong> Valdenegro-Toro, M. (2019).{' '}
+                <em>Marine Debris Forward-Looking Sonar Dataset: Watertank release</em>. Sound Metrics ARIS Explorer 3000.
               </div>
-
-              <div className="inset" style={{ padding: '16px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--highlight-green)', fontWeight: 500 }}>Student researcher</div>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-bright)', marginTop: '4px' }}>
-                  Muhammad Haroon
-                </div>
-                <div className="font-mono" style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '2px' }}>
-                  Enrollment: 01-134231-052
-                </div>
+              <div className="p-3 rounded-control bg-soft border border-line">
+                <strong className="text-ink">Open-Set Recognition:</strong> Scheirer, W. J., de Rocha, A., Micheals, R. J., &amp; Boult, T. E. (2013).{' '}
+                <em>Toward Open Set Recognition</em>. IEEE TPAMI, 35(7), 1757–1772.
               </div>
-            </div>
-          </div>
-
-          {/* Academic Citations from Section 3 Page 9 of design.md */}
-          <div className="glass--card">
-            <div className="card-header">
-              <h3 className="card-title">
-                <BookOpen size={16} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
-                Academic references and dataset citations
-              </h3>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div className="plate" style={{ padding: '12px 14px', fontSize: '12px', lineHeight: 1.6, color: 'var(--text-muted)' }}>
-                <strong style={{ color: 'var(--text-bright)' }}>MD-FLS Dataset:</strong> Valdenegro-Toro, M. (2019). <em>Marine Debris Forward-Looking Sonar Dataset: Watertank release</em>. Sound Metrics ARIS Explorer 3000 high-frequency multibeam acoustic imagery.
-              </div>
-              <div className="plate" style={{ padding: '12px 14px', fontSize: '12px', lineHeight: 1.6, color: 'var(--text-muted)' }}>
-                <strong style={{ color: 'var(--text-bright)' }}>Open-Set Recognition:</strong> Scheirer, W. J., de Rocha, A., Micheals, R. J., & Boult, T. E. (2013). <em>Toward Open Set Recognition</em>. IEEE TPAMI, 35(7), 1757–1772.
-              </div>
-              <div className="plate" style={{ padding: '12px 14px', fontSize: '12px', lineHeight: 1.6, color: 'var(--text-muted)' }}>
-                <strong style={{ color: 'var(--text-bright)' }}>Baseline MSP:</strong> Hendrycks, D., & Gimpel, K. (2017). <em>A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks</em>. ICLR.
+              <div className="p-3 rounded-control bg-soft border border-line">
+                <strong className="text-ink">Baseline MSP:</strong> Hendrycks, D., &amp; Gimpel, K. (2017).{' '}
+                <em>A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks</em>. ICLR.
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </div>
