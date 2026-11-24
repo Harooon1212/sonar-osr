@@ -131,15 +131,15 @@ export default function NoiseLab() {
   };
 
   return (
-    <div className="card">
+    <div className="glass" style={{ padding: '24px' }}>
       <div className="card-header">
         <div>
           <h3 className="card-title">
-            <Sliders size={18} style={{ color: 'var(--accent-cyan)' }} />
-            Ocean Speckle Noise & Preprocessing Workbench
+            <Sliders size={18} style={{ color: 'var(--glow-cyan)' }} />
+            Ocean speckle noise & preprocessing workbench
           </h3>
           <p className="card-subtitle">
-            Simulate underwater acoustic degradation and verify Median speckle suppression and CLAHE contrast equalization
+            Simulate underwater acoustic degradation and verify median speckle suppression and CLAHE contrast equalization
           </p>
         </div>
       </div>
@@ -213,9 +213,9 @@ export default function NoiseLab() {
         </div>
       </div>
 
-      {/* 3-Way Visual Pipeline Strip */}
+      {/* 3-Way Visual Pipeline Strip (Data plates, NO blur) */}
       <div className="grid-3">
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+        <div className="plate" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)', marginBottom: '10px' }}>
             1. Raw acoustic capture
           </div>
@@ -238,8 +238,8 @@ export default function NoiseLab() {
           </div>
         </div>
 
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--semantic-negative)', marginBottom: '10px' }}>
+        <div className="plate" style={{ padding: '16px', textAlign: 'center' }}>
+          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--alert-red)', marginBottom: '10px' }}>
             2. Rayleigh speckle noise
           </div>
           <div style={{ minHeight: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', padding: '4px' }}>
@@ -256,13 +256,13 @@ export default function NoiseLab() {
               }}
             />
           </div>
-          <div className="font-mono tabular-nums" style={{ marginTop: '10px', fontSize: '11px', color: 'var(--semantic-negative)' }}>
+          <div className="font-mono tabular-nums" style={{ marginTop: '10px', fontSize: '11px', color: 'var(--alert-red)' }}>
             Estimated SNR: {processed ? `${processed.snr} dB` : '~14.2 dB'}
           </div>
         </div>
 
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--semantic-positive)', marginBottom: '10px' }}>
+        <div className="plate" style={{ padding: '16px', textAlign: 'center' }}>
+          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--highlight-green)', marginBottom: '10px' }}>
             3. Median and CLAHE restored
           </div>
           <div style={{ minHeight: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', padding: '4px' }}>
@@ -279,7 +279,7 @@ export default function NoiseLab() {
               }}
             />
           </div>
-          <div className="font-mono tabular-nums" style={{ marginTop: '10px', fontSize: '11px', color: 'var(--semantic-positive)' }}>
+          <div className="font-mono tabular-nums" style={{ marginTop: '10px', fontSize: '11px', color: 'var(--highlight-green)' }}>
             Contrast gain: {processed ? processed.contrast_gain : '+44.2%'}
           </div>
         </div>

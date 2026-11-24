@@ -105,7 +105,7 @@ export default function Dashboard() {
       {/* Tab 1: Summary Leaderboard */}
       {activeTab === 'summary' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div className="card">
+          <div className="plate" style={{ padding: '22px' }}>
             <div className="card-header">
               <h3 className="card-title">Acoustic open-set paradigm benchmark summary</h3>
               <span className="badge badge-info">Metrics: AUROC and UDR</span>
@@ -126,17 +126,17 @@ export default function Dashboard() {
                 </thead>
                 <tbody>
                   {benchmarkTable.map((row, idx) => (
-                    <tr key={idx} style={{ background: idx === 0 ? 'rgba(56, 189, 248, 0.04)' : 'transparent' }}>
+                    <tr key={idx} style={{ background: idx === 0 ? 'rgba(56, 189, 248, 0.05)' : 'transparent' }}>
                       <td style={{ fontWeight: 500, color: 'var(--text-bright)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span>{row.method}</span>
                         <span className={`badge ${row.badgeClass}`}>{row.badge}</span>
                       </td>
                       <td className="font-mono tabular-nums">{row.closedAcc}</td>
-                      <td className="font-mono tabular-nums" style={{ color: idx === 0 ? 'var(--accent-cyan)' : 'var(--text-bright)', fontWeight: 500 }}>
+                      <td className="font-mono tabular-nums" style={{ color: idx === 0 ? 'var(--glow-cyan)' : 'var(--text-bright)', fontWeight: 600 }}>
                         {row.auroc}
                       </td>
                       <td className="font-mono tabular-nums">{row.ap}</td>
-                      <td className="font-mono tabular-nums" style={{ color: 'var(--semantic-positive)' }}>{row.udr}</td>
+                      <td className="font-mono tabular-nums" style={{ color: 'var(--highlight-green)' }}>{row.udr}</td>
                       <td className="font-mono tabular-nums">{row.ece}</td>
                       <td className="font-mono tabular-nums" style={{ color: 'var(--text-muted)' }}>{row.latency}</td>
                     </tr>
@@ -147,16 +147,16 @@ export default function Dashboard() {
           </div>
 
           <div className="grid-2">
-            <div className="card">
+            <div className="glass--card">
               <div className="card-header">
                 <h4 className="card-title">Key scientific findings</h4>
               </div>
-              <ul style={{ paddingLeft: '20px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.8 }}>
+              <ul style={{ paddingLeft: '20px', fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.8 }}>
                 <li>
                   <strong style={{ color: 'var(--text-bright)' }}>Metric space compactness:</strong> Deep Metric Learning (AUROC 0.9255) improves on Baseline MSP by <strong>+10.9%</strong> through enforced hypersphere clustering.
                 </li>
                 <li>
-                  <strong style={{ color: 'var(--text-bright)' }}>One-class boundary:</strong> Deep SVDD (AUROC 0.8986) achieves strong anomaly containment without requiring negative class labels during training.
+                  <strong style={{ color: 'var(--text-bright)' }}>One-class boundary:</strong> One-class SVDD (AUROC 0.8986) achieves lowest false-positive rate (11.71%) without requiring negative class labels during training.
                 </li>
                 <li>
                   <strong style={{ color: 'var(--text-bright)' }}>Softmax overconfidence:</strong> Baseline MSP assigns &gt;95% confidence to 23% of unknown objects due to unbounded linear hyperplanes.
@@ -164,7 +164,7 @@ export default function Dashboard() {
               </ul>
             </div>
 
-            <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px' }}>
+            <div className="glass--card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px' }}>
               <img
                 src="/figures/all_methods_comparison.png"
                 alt="Benchmark comparison"

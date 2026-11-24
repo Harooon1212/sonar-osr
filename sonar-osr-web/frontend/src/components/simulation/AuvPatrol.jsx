@@ -13,13 +13,13 @@ export default function AuvPatrol() {
   });
 
   const patrolWaypoints = [
-    { id: 1, name: 'WP-Alpha', target: 'bottle', sampleImg: '/samples/bottle-sample.png', isKnown: true, score: 0.88, label: 'Known Debris (Glass Bottle)' },
-    { id: 2, name: 'WP-Bravo', target: 'can', sampleImg: '/samples/can-sample.png', isKnown: true, score: 0.84, label: 'Known Debris (Metal Can)' },
-    { id: 3, name: 'WP-Charlie', target: 'chain', sampleImg: '/samples/chain-sample.png', isKnown: false, score: 0.28, label: 'UNKNOWN ANOMALY (Moor Chain)' },
-    { id: 4, name: 'WP-Delta', target: 'tire', sampleImg: '/samples/tire-sample.png', isKnown: true, score: 0.91, label: 'Known Debris (Rubber Tire)' },
-    { id: 5, name: 'WP-Echo', target: 'valve', sampleImg: '/samples/valve-sample.png', isKnown: false, score: 0.31, label: 'UNKNOWN ANOMALY (Industrial Valve)' },
-    { id: 6, name: 'WP-Foxtrot', target: 'propeller', sampleImg: '/samples/propeller-sample.png', isKnown: true, score: 0.89, label: 'Known Object (Propeller)' },
-    { id: 7, name: 'WP-Golf', target: 'shampoo', sampleImg: '/samples/shampoo-sample.png', isKnown: false, score: 0.22, label: 'UNKNOWN ANOMALY (Plastic Flask)' },
+    { id: 1, name: 'WP-Alpha', target: 'bottle', sampleImg: '/samples/bottle-sample.png', isKnown: true, score: 0.88, label: 'Known debris (glass bottle)' },
+    { id: 2, name: 'WP-Bravo', target: 'can', sampleImg: '/samples/can-sample.png', isKnown: true, score: 0.84, label: 'Known debris (metal can)' },
+    { id: 3, name: 'WP-Charlie', target: 'chain', sampleImg: '/samples/chain-sample.png', isKnown: false, score: 0.28, label: 'Unknown anomaly (moor chain)' },
+    { id: 4, name: 'WP-Delta', target: 'tire', sampleImg: '/samples/tire-sample.png', isKnown: true, score: 0.91, label: 'Known debris (rubber tire)' },
+    { id: 5, name: 'WP-Echo', target: 'valve', sampleImg: '/samples/valve-sample.png', isKnown: false, score: 0.31, label: 'Unknown anomaly (industrial valve)' },
+    { id: 6, name: 'WP-Foxtrot', target: 'propeller', sampleImg: '/samples/propeller-sample.png', isKnown: true, score: 0.89, label: 'Known object (propeller)' },
+    { id: 7, name: 'WP-Golf', target: 'shampoo', sampleImg: '/samples/shampoo-sample.png', isKnown: false, score: 0.22, label: 'Unknown anomaly (plastic flask)' },
   ];
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function AuvPatrol() {
             target: wp.label,
             isKnown: wp.isKnown,
             score: wp.score,
-            action: wp.isKnown ? 'Pass / Log Clutter' : 'EVASIVE MANOEUVRE / HOLD'
+            action: wp.isKnown ? 'Catalogued / Continue' : 'Anomaly rejected / Evasive waypoint'
           };
           setLogs((prevLogs) => [newLog, ...prevLogs.slice(0, 15)]);
 
@@ -63,15 +63,15 @@ export default function AuvPatrol() {
   };
 
   return (
-    <div className="card">
+    <div className="glass" style={{ padding: '24px' }}>
       <div className="card-header">
         <div>
           <h3 className="card-title">
-            <Compass size={18} style={{ color: 'var(--accent-cyan)' }} />
-            Autonomous Underwater Vehicle (AUV) Patrol Simulator
+            <Compass size={18} style={{ color: 'var(--glow-cyan)' }} />
+            Autonomous underwater vehicle (AUV) patrol simulator
           </h3>
           <p className="card-subtitle">
-            Simulates an autonomous seabed survey mission running real-time open-set anomaly rejection
+            Illustrative simulation of an autonomous seabed survey mission running real-time open-set anomaly rejection
           </p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -81,7 +81,7 @@ export default function AuvPatrol() {
             onClick={() => setIsPlaying(!isPlaying)}
           >
             {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-            {isPlaying ? 'Halt Mission' : 'Start Patrol'}
+            {isPlaying ? 'Halt mission' : 'Start patrol'}
           </button>
           <button
             className="btn btn-secondary"
@@ -93,139 +93,95 @@ export default function AuvPatrol() {
         </div>
       </div>
 
-      {/* Telemetry HUD Strip */}
+      {/* Telemetry HUD Inset Strip */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '20px' }}>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>AUV Depth</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+        <div className="inset" style={{ padding: '14px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>AUV depth</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--glow-cyan)' }}>
             {telemetry.depth} m
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Cruising Velocity</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 700, color: 'var(--text-bright)' }}>
+        <div className="inset" style={{ padding: '14px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Cruising velocity</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-bright)' }}>
             {telemetry.speed} kts
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Acoustic Frequency</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 700, color: 'var(--accent-purple)' }}>
+        <div className="inset" style={{ padding: '14px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Acoustic frequency</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--shadow-purple)' }}>
             {telemetry.pingFreq}
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Heading</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '18px', fontWeight: 700, color: 'var(--accent-green)' }}>
+        <div className="inset" style={{ padding: '14px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Heading</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--highlight-green)' }}>
             {telemetry.heading}
           </div>
         </div>
       </div>
 
       <div className="grid-2">
-        {/* Active Contact & Seabed Trajectory */}
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', border: '1px solid var(--border-subtle)' }}>
+        {/* Active Contact Data Plate */}
+        <div className="plate" style={{ padding: '18px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-bright)' }}>
-              Active Acoustic Contact at {activeContact.name}
+              Active acoustic contact at {activeContact.name}
             </span>
-            <span className={`badge ${activeContact.isKnown ? 'badge-known' : 'badge-unknown'}`}>
-              {activeContact.isKnown ? 'Known Seabed Clutter' : 'UNREGISTERED ANOMALY'}
+            <span className={activeContact.isKnown ? 'badge badge-known' : 'badge badge-unknown'}>
+              {activeContact.isKnown ? 'Known class verified' : 'Anomaly rejected'}
             </span>
           </div>
 
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center', margin: '14px 0' }}>
-            <img
-              src={activeContact.sampleImg}
-              alt={activeContact.label}
-              style={{
-                width: '100px',
-                height: '100px',
-                objectFit: 'contain',
-                background: '#000',
-                borderRadius: 'var(--radius-sm)',
-                border: `2px solid ${activeContact.isKnown ? 'var(--accent-green)' : 'var(--accent-red)'}`
-              }}
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
-            />
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '15px', fontWeight: 600, color: activeContact.isKnown ? 'var(--semantic-positive)' : 'var(--semantic-negative)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '150px 1fr', gap: '16px', alignItems: 'center' }}>
+            <div style={{ background: '#050811', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-control)', height: '140px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px' }}>
+              <img src={activeContact.sampleImg} alt="Contact" style={{ maxHeight: '128px', maxWidth: '100%', objectFit: 'contain' }} />
+            </div>
+
+            <div>
+              <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-bright)', marginBottom: '4px' }}>
                 {activeContact.label}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                Open-set metric confidence: <strong className="font-mono tabular-nums" style={{ color: 'var(--text-bright)' }}>{activeContact.score.toFixed(2)}</strong>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                Target type: <strong style={{ color: activeContact.isKnown ? 'var(--highlight-green)' : 'var(--alert-red)' }}>
+                  {activeContact.isKnown ? 'In-distribution debris' : 'Out-of-distribution obstacle'}
+                </strong>
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                Decision threshold: <strong className="font-mono tabular-nums">τ = 0.50</strong>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                Acoustic confidence: <strong className="font-mono tabular-nums" style={{ color: 'var(--glow-cyan)' }}>{(activeContact.score * 100).toFixed(1)}%</strong>
               </div>
-              <div style={{
-                marginTop: '10px',
-                padding: '6px 10px',
-                borderRadius: 'var(--radius-xs)',
-                background: activeContact.isKnown ? 'var(--semantic-positive-subtle)' : 'var(--semantic-negative-subtle)',
-                border: `1px solid ${activeContact.isKnown ? 'rgba(76,195,138,0.25)' : 'rgba(229,72,77,0.25)'}`,
-                fontSize: '12px',
-                fontWeight: 500,
-                color: activeContact.isKnown ? 'var(--semantic-positive)' : 'var(--semantic-negative)'
-              }}>
-                {activeContact.isKnown
-                  ? 'Action: Safe to proceed survey (known debris)'
-                  : 'Action: Anomaly avoidance triggered (emergency hold)'}
+              <div style={{ marginTop: '10px', fontSize: '12px', padding: '6px 10px', borderRadius: 'var(--radius-xs)', background: activeContact.isKnown ? 'var(--semantic-positive-subtle)' : 'var(--semantic-negative-subtle)', color: activeContact.isKnown ? 'var(--highlight-green)' : 'var(--alert-red)', border: activeContact.isKnown ? '1px solid rgba(16,185,129,0.25)' : '1px solid rgba(239,68,68,0.25)' }}>
+                Mission action: {activeContact.isKnown ? 'Survey course maintained' : 'Autonomous obstacle avoidance triggered'}
               </div>
-            </div>
-          </div>
-
-          {/* Waypoint progress bar */}
-          <div style={{ marginTop: '16px' }}>
-            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '6px' }}>Seabed mission trajectory</div>
-            <div style={{ display: 'flex', gap: '4px' }}>
-              {patrolWaypoints.map((wp, i) => (
-                <div
-                  key={wp.id}
-                  style={{
-                    flex: 1,
-                    height: '6px',
-                    borderRadius: '2px',
-                    backgroundColor: i === currentStep ? 'var(--accent-cyan)' : i < currentStep ? 'var(--border-strong)' : 'var(--bg-elevated)',
-                    transition: 'background-color 140ms ease'
-                  }}
-                  title={wp.name}
-                ></div>
-              ))}
             </div>
           </div>
         </div>
 
-        {/* Real-Time AUV Telemetry Log */}
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', border: '1px solid var(--border-subtle)', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
-            <span>Acoustic mission telemetry stream</span>
-            <span className="font-mono tabular-nums" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>15 Hz pings</span>
+        {/* Mission Event Log Plate */}
+        <div className="plate" style={{ padding: '18px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-bright)' }}>
+              Subsea survey mission log
+            </span>
+            <span className="badge badge-info font-mono tabular-nums">{logs.length} events</span>
           </div>
 
-          <div style={{
-            flex: 1,
-            maxHeight: '220px',
-            overflowY: 'auto',
-            background: 'var(--bg-deepest)',
-            borderRadius: 'var(--radius-xs)',
-            padding: '10px',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            border: '1px solid var(--border-subtle)'
-          }}>
+          <div style={{ height: '160px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {logs.length === 0 ? (
-              <div style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '40px 0' }}>
-                Press "Start patrol" to begin autonomous survey
+              <div style={{ color: 'var(--text-faint)', fontSize: '12px', textAlign: 'center', margin: 'auto' }}>
+                Click "Start patrol" to begin simulated AUV seabed survey mission.
               </div>
             ) : (
-              logs.map((l, idx) => (
-                <div key={idx} style={{ marginBottom: '6px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '4px' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>[{l.time}]</span>{' '}
-                  <span style={{ color: 'var(--text-bright)' }}>{l.wp}:</span>{' '}
-                  <span style={{ color: l.isKnown ? 'var(--semantic-positive)' : 'var(--semantic-negative)' }}>{l.action}</span>{' '}
-                  <span style={{ color: 'var(--text-secondary)' }}>({l.target})</span>
+              logs.map((log, idx) => (
+                <div key={idx} className="inset" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 10px', fontSize: '11px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="font-mono tabular-nums" style={{ color: 'var(--text-faint)' }}>{log.time}</span>
+                    <strong style={{ color: log.isKnown ? 'var(--highlight-green)' : 'var(--alert-red)' }}>{log.wp}</strong>
+                    <span style={{ color: 'var(--text-muted)' }}>{log.target}</span>
+                  </div>
+                  <span className={log.isKnown ? 'badge badge-known' : 'badge badge-unknown'} style={{ fontSize: '10px' }}>
+                    {log.action}
+                  </span>
                 </div>
               ))
             )}

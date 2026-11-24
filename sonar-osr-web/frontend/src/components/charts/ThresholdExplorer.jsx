@@ -132,7 +132,7 @@ export default function ThresholdExplorer() {
   }, [threshold]);
 
   return (
-    <div className="card">
+    <div className="plate" style={{ padding: '22px' }}>
       <div className="card-header">
         <div>
           <h3 className="card-title">Real-time threshold and separability explorer</h3>
@@ -183,21 +183,21 @@ export default function ThresholdExplorer() {
       <svg ref={svgRef} style={{ width: '100%', height: '220px' }}></svg>
 
       <div className="grid-3" style={{ marginTop: '16px' }}>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
           <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Known class retention (TPR)</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 500, color: 'var(--semantic-positive)', marginTop: '2px' }}>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--highlight-green)', marginTop: '2px' }}>
             {tpr.toFixed(1)}%
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
           <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Unknown anomaly rejection (UDR)</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 500, color: 'var(--accent-cyan)', marginTop: '2px' }}>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--glow-cyan)', marginTop: '2px' }}>
             {udr.toFixed(1)}%
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
           <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>False alarm rate (FPR)</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 500, color: fpr > 15 ? 'var(--semantic-negative)' : 'var(--text-main)', marginTop: '2px' }}>
+          <div className="font-mono tabular-nums" style={{ fontSize: '18px', fontWeight: 600, color: fpr > 15 ? 'var(--alert-red)' : 'var(--text-main)', marginTop: '2px' }}>
             {fpr.toFixed(1)}%
           </div>
         </div>

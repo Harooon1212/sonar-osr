@@ -35,8 +35,8 @@ export default function Navigation() {
           </div>
           <div>
             <div className="brand-title">SonarOSR</div>
-            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '-1px' }}>
-              Acoustic Anomaly Detection
+            <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '-1px' }}>
+              Acoustic anomaly detection
             </div>
           </div>
           <span className="brand-badge tabular-nums">ARIS 3000</span>
@@ -48,15 +48,15 @@ export default function Navigation() {
           </NavLink>
           <NavLink to="/demo" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Activity size={15} strokeWidth={1.5} />
-            Live Demo
+            Live demo
           </NavLink>
           <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Cpu size={15} strokeWidth={1.5} />
-            Benchmark Suite
+            Benchmark suite
           </NavLink>
           <NavLink to="/lab" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <FlaskConical size={15} strokeWidth={1.5} />
-            Acoustic Lab
+            Acoustic lab
           </NavLink>
           <NavLink to="/methods" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <BookOpen size={15} strokeWidth={1.5} />
@@ -72,12 +72,20 @@ export default function Navigation() {
           </NavLink>
         </nav>
 
+        {/* Status badge: reports /api/health with ARIS Explorer 3000 sub-label (Section 3 Page 1) */}
         <div className="nav-status">
           <span
             className="pulse-dot"
-            style={{ backgroundColor: backendStatus === 'online' ? 'var(--semantic-positive)' : 'var(--semantic-warning)' }}
+            style={{ backgroundColor: backendStatus === 'online' ? 'var(--highlight-green)' : 'var(--semantic-warning)' }}
           />
-          <span>{backendStatus === 'online' ? 'Inference engine active' : 'Fallback / Standby'}</span>
+          <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
+            <div style={{ fontWeight: 500, color: 'var(--text-bright)', fontSize: '11px' }}>
+              {backendStatus === 'online' ? 'Model online' : 'Waking up the model'}
+            </div>
+            <div style={{ fontSize: '9px', color: 'var(--text-faint)' }}>
+              Trained on ARIS Explorer 3000 data
+            </div>
+          </div>
         </div>
       </div>
     </header>

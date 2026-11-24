@@ -141,7 +141,7 @@ export default function ConfusionMatrix() {
   }, [method]);
 
   return (
-    <div className="card">
+    <div className="plate" style={{ padding: '22px' }}>
       <div className="card-header">
         <div>
           <h3 className="card-title">Normalized open-set confusion matrix</h3>

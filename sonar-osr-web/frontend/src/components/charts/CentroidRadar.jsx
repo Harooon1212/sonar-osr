@@ -128,7 +128,7 @@ export default function CentroidRadar({ distances, threshold, predictedClass, is
   }, [distances, threshold, predictedClass, isKnown]);
 
   return (
-    <div className="card" style={{ padding: '16px' }}>
+    <div className="plate" style={{ padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
         <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-bright)' }}>Centroid distance distribution</h4>
         <span className="badge badge-info" style={{ fontSize: '11px' }}>Metric space</span>

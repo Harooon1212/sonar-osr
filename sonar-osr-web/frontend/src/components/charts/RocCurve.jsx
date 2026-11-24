@@ -161,7 +161,7 @@ export default function RocCurve() {
   }, [curveType, currentData]);
 
   return (
-    <div className="card">
+    <div className="plate" style={{ padding: '22px' }}>
       <div className="card-header">
         <div>
           <h3 className="card-title">{curveType.toUpperCase()} characteristic</h3>

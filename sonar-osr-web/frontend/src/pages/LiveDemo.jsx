@@ -303,10 +303,10 @@ export default function LiveDemo() {
         {/* Left Control Sidebar */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Preset Buttons */}
-          <div className="card" style={{ padding: '16px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '10px' }}>Test Echo Presets</div>
+          <div className="glass--card" style={{ padding: '18px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '10px' }}>Test echo presets</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--semantic-positive)', fontWeight: 500, margin: '4px 0 2px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--highlight-green)', fontWeight: 500, margin: '4px 0 2px' }}>
                 Known classes (trained)
               </div>
               {presets.filter(p => p.known).map(p => (
@@ -316,12 +316,12 @@ export default function LiveDemo() {
                   style={{ justifyContent: 'flex-start', fontSize: '12px', padding: '6px 10px' }}
                   onClick={() => handlePresetSelect(p)}
                 >
-                  <ShieldCheck size={14} strokeWidth={1.5} style={{ color: previewUrl === p.path ? '#07080d' : 'var(--semantic-positive)' }} />
+                  <ShieldCheck size={14} strokeWidth={1.5} style={{ color: previewUrl === p.path ? 'var(--text-bright)' : 'var(--highlight-green)' }} />
                   {p.label}
                 </button>
               ))}
 
-              <div style={{ fontSize: '11px', color: 'var(--semantic-negative)', fontWeight: 500, margin: '8px 0 2px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--alert-red)', fontWeight: 500, margin: '8px 0 2px' }}>
                 Unknown anomalies (unseen)
               </div>
               {presets.filter(p => !p.known).map(p => (
@@ -331,7 +331,7 @@ export default function LiveDemo() {
                   style={{ justifyContent: 'flex-start', fontSize: '12px', padding: '6px 10px' }}
                   onClick={() => handlePresetSelect(p)}
                 >
-                  <ShieldAlert size={14} strokeWidth={1.5} style={{ color: previewUrl === p.path ? '#07080d' : 'var(--semantic-negative)' }} />
+                  <ShieldAlert size={14} strokeWidth={1.5} style={{ color: previewUrl === p.path ? 'var(--text-bright)' : 'var(--alert-red)' }} />
                   {p.label}
                 </button>
               ))}
@@ -339,51 +339,51 @@ export default function LiveDemo() {
           </div>
 
           {/* Upload Dropzone */}
-          <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px' }}>Upload Custom Echogram</div>
+          <div className="glass--card" style={{ padding: '18px', textAlign: 'center' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px' }}>Upload custom echogram</div>
             <label style={{
               display: 'block',
-              border: '2px dashed var(--border-subtle)',
-              borderRadius: 'var(--radius-md)',
+              border: '2px dashed var(--glass-border)',
+              borderRadius: 'var(--radius-control)',
               padding: '20px 12px',
               cursor: 'pointer',
-              background: 'var(--bg-elevated)',
+              background: 'rgba(255, 255, 255, 0.03)',
               transition: 'border-color 0.2s'
             }}>
-              <Upload size={24} style={{ color: 'var(--accent-cyan)', margin: '0 auto 8px' }} />
+              <Upload size={24} style={{ color: 'var(--glow-cyan)', margin: '0 auto 8px' }} />
               <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                Drop PNG / JPG sonar crop or <span style={{ color: 'var(--accent-cyan)' }}>browse</span>
+                Drop PNG / JPG sonar crop or <span style={{ color: 'var(--glow-cyan)' }}>browse</span>
               </div>
               <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
             </label>
           </div>
 
-          {/* Operating Risk Presets */}
-          <div className="card" style={{ padding: '16px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 500, marginBottom: '10px', color: 'var(--text-bright)' }}>Risk mode presets</div>
+          {/* Strictness Control Presets (Section 3 Page 2: Defense, Balanced, High-recall) */}
+          <div className="glass--card" style={{ padding: '18px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 500, marginBottom: '10px', color: 'var(--text-bright)' }}>Strictness presets</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <button
                 className={`btn ${Math.abs(threshold - 0.20) < 0.03 ? 'btn-primary' : 'btn-outline'}`}
-                style={{ fontSize: '12px', padding: '6px 10px', justifyContent: 'space-between' }}
+                style={{ fontSize: '12px', padding: '7px 10px', justifyContent: 'space-between' }}
                 onClick={() => handleThresholdChange(0.20)}
               >
-                <span>Strict filter</span>
+                <span>Defense (high rejection)</span>
                 <span className="font-mono tabular-nums">τ = 0.20</span>
               </button>
               <button
                 className={`btn ${Math.abs(threshold - 0.50) < 0.03 ? 'btn-primary' : 'btn-outline'}`}
-                style={{ fontSize: '12px', padding: '6px 10px', justifyContent: 'space-between' }}
+                style={{ fontSize: '12px', padding: '7px 10px', justifyContent: 'space-between' }}
                 onClick={() => handleThresholdChange(0.50)}
               >
-                <span>Calibrated baseline</span>
+                <span>Balanced (Youden's J)</span>
                 <span className="font-mono tabular-nums">τ = 0.50</span>
               </button>
               <button
                 className={`btn ${Math.abs(threshold - 0.80) < 0.03 ? 'btn-primary' : 'btn-outline'}`}
-                style={{ fontSize: '12px', padding: '6px 10px', justifyContent: 'space-between' }}
+                style={{ fontSize: '12px', padding: '7px 10px', justifyContent: 'space-between' }}
                 onClick={() => handleThresholdChange(0.80)}
               >
-                <span>High recall boundary</span>
+                <span>High-recall target</span>
                 <span className="font-mono tabular-nums">τ = 0.80</span>
               </button>
             </div>
@@ -393,7 +393,7 @@ export default function LiveDemo() {
         {/* Main Content Area */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Query Image & Dynamic Threshold Header */}
-          <div className="card">
+          <div className="glass--card">
             <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '24px', alignItems: 'center' }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ background: '#000', borderRadius: 'var(--radius-sm)', padding: '6px', border: '1px solid var(--border-subtle)', height: '140px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -440,12 +440,12 @@ export default function LiveDemo() {
             </div>
           </div>
 
-          {/* 3-Paradigm Showdown Section */}
-          <div className="card">
+          {/* 3-Paradigm Showdown Section (Tier 1 Glass Shell holding Inset plates) */}
+          <div className="glass" style={{ padding: '22px' }}>
             <div className="card-header">
               <div>
                 <h3 className="card-title">
-                  <Cpu size={16} strokeWidth={1.5} style={{ color: 'var(--accent-cyan)' }} />
+                  <Cpu size={16} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
                   3-paradigm architectural showdown
                 </h3>
                 <p className="card-subtitle">Direct side-by-side verdict comparison on the exact same acoustic echogram</p>
@@ -454,25 +454,19 @@ export default function LiveDemo() {
 
             <div className="grid-3">
               {/* Paradigm 1: DML */}
-              <div style={{
-                background: 'var(--bg-elevated)',
-                borderRadius: 'var(--radius-md)',
-                padding: '16px',
-                border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--highlight-top)'
-              }}>
+              <div className="inset" style={{ padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>DML Triplet Head</span>
+                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>Deep metric learning (DML)</span>
                   <span className={prediction.showdown?.dml?.is_known ? 'badge badge-known' : 'badge badge-unknown'}>
                     {prediction.showdown?.dml?.is_known ? 'Known' : 'Rejected'}
                   </span>
                 </div>
 
-                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.dml?.is_known ? 'var(--semantic-positive)' : 'var(--semantic-negative)', marginBottom: '4px' }}>
+                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.dml?.is_known ? 'var(--highlight-green)' : 'var(--alert-red)', marginBottom: '4px' }}>
                   {prediction.showdown?.dml?.decision}
                 </div>
 
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                   Class: <strong style={{ color: 'var(--text-bright)', textTransform: 'capitalize' }}>
                     {prediction.showdown?.dml?.class || prediction.predicted_class || 'bottle'}
                   </strong>
@@ -486,31 +480,25 @@ export default function LiveDemo() {
                   isDistanceMetric={true}
                 />
 
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.4 }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '8px', lineHeight: 1.4 }}>
                   {prediction.showdown?.dml?.explanation}
                 </div>
               </div>
 
-              {/* Paradigm 2: Deep SVDD */}
-              <div style={{
-                background: 'var(--bg-elevated)',
-                borderRadius: 'var(--radius-md)',
-                padding: '16px',
-                border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--highlight-top)'
-              }}>
+              {/* Paradigm 2: One-Class SVDD */}
+              <div className="inset" style={{ padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>Deep SVDD</span>
+                  <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>One-class SVDD (nearest centroid)</span>
                   <span className={prediction.showdown?.svdd?.is_known ? 'badge badge-known' : 'badge badge-unknown'}>
                     {prediction.showdown?.svdd?.is_known ? 'Known' : 'Rejected'}
                   </span>
                 </div>
 
-                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.svdd?.is_known ? 'var(--semantic-positive)' : 'var(--semantic-negative)', marginBottom: '4px' }}>
+                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.svdd?.is_known ? 'var(--highlight-green)' : 'var(--alert-red)', marginBottom: '4px' }}>
                   {prediction.showdown?.svdd?.decision}
                 </div>
 
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                   Class: <strong style={{ color: 'var(--text-bright)', textTransform: 'capitalize' }}>
                     {prediction.showdown?.svdd?.class || prediction.predicted_class || 'bottle'}
                   </strong>
@@ -524,31 +512,25 @@ export default function LiveDemo() {
                   isDistanceMetric={true}
                 />
 
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.4 }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '8px', lineHeight: 1.4 }}>
                   {prediction.showdown?.svdd?.explanation}
                 </div>
               </div>
 
               {/* Paradigm 3: Baseline MSP */}
-              <div style={{
-                background: 'var(--bg-elevated)',
-                borderRadius: 'var(--radius-md)',
-                padding: '16px',
-                border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--highlight-top)'
-              }}>
+              <div className="inset" style={{ padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                   <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)' }}>Baseline MSP</span>
                   <span className={isUnknownActive && prediction.showdown?.msp?.is_known ? 'badge badge-warning' : (prediction.showdown?.msp?.is_known ? 'badge badge-known' : 'badge badge-unknown')}>
-                    {isUnknownActive && prediction.showdown?.msp?.is_known ? 'False Alarm' : (prediction.showdown?.msp?.is_known ? 'Known' : 'Rejected')}
+                    {isUnknownActive && prediction.showdown?.msp?.is_known ? 'False alarm' : (prediction.showdown?.msp?.is_known ? 'Known' : 'Rejected')}
                   </span>
                 </div>
 
-                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.msp?.is_known ? (isUnknownActive ? 'var(--semantic-warning)' : 'var(--semantic-positive)') : 'var(--semantic-negative)', marginBottom: '4px' }}>
+                <div style={{ fontSize: '15px', fontWeight: 600, color: prediction.showdown?.msp?.is_known ? (isUnknownActive ? 'var(--semantic-warning)' : 'var(--highlight-green)') : 'var(--alert-red)', marginBottom: '4px' }}>
                   {prediction.showdown?.msp?.decision}
                 </div>
 
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                   Class: <strong style={{ color: 'var(--text-bright)', textTransform: 'capitalize' }}>
                     {prediction.showdown?.msp?.class || prediction.predicted_class || 'bottle'}
                   </strong>
@@ -562,7 +544,7 @@ export default function LiveDemo() {
                   isDistanceMetric={false}
                 />
 
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.4 }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '8px', lineHeight: 1.4 }}>
                   {isUnknownActive && prediction.showdown?.msp?.is_known ? (
                     <div style={{ color: 'var(--semantic-warning)', background: 'var(--semantic-warning-subtle)', padding: '6px 8px', borderRadius: '4px', border: '1px solid rgba(245,158,11,0.25)', marginTop: '4px' }}>
                       Warning: Softmax assigned high certainty to an unseen unknown anomaly

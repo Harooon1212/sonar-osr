@@ -64,11 +64,11 @@ export default function PhysicsInspector() {
   }, []);
 
   return (
-    <div className="card">
+    <div className="glass" style={{ padding: '24px' }}>
       <div className="card-header">
         <div>
           <h3 className="card-title">
-            <Layers size={16} strokeWidth={1.5} style={{ color: 'var(--accent-cyan)' }} />
+            <Layers size={16} strokeWidth={1.5} style={{ color: 'var(--glow-cyan)' }} />
             Highlight and shadow physics decomposition
           </h3>
           <p className="card-subtitle">
@@ -77,7 +77,7 @@ export default function PhysicsInspector() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '18px' }}>
         {samples.map((s) => (
           <button
             key={s.path}
@@ -90,8 +90,9 @@ export default function PhysicsInspector() {
         ))}
       </div>
 
+      {/* Two Data Plates for Image Views (Near-opaque, NO blur) */}
       <div className="grid-2">
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+        <div className="plate" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)', marginBottom: '10px' }}>
             Original ARIS sonar echo
           </div>
@@ -105,13 +106,13 @@ export default function PhysicsInspector() {
                 maxWidth: '340px',
                 objectFit: 'contain',
                 borderRadius: 'var(--radius-xs)',
-                border: '1px solid var(--border-subtle)'
+                border: '1px solid var(--glass-border)'
               }}
             />
           </div>
         </div>
 
-        <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-md)', padding: '16px', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
+        <div className="plate" style={{ padding: '16px', textAlign: 'center' }}>
           <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-bright)', marginBottom: '10px' }}>
             Acoustic segmentation (highlight / shadow)
           </div>
@@ -126,15 +127,15 @@ export default function PhysicsInspector() {
                   maxWidth: '340px',
                   objectFit: 'contain',
                   borderRadius: 'var(--radius-xs)',
-                  border: '1px solid var(--border-subtle)'
+                  border: '1px solid var(--glass-border)'
                 }}
               />
             ) : (
-              <div style={{ position: 'relative', width: '260px', height: '260px', background: 'var(--bg-primary)', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-xs)' }}>
-                <div style={{ width: '60px', height: '45px', background: 'var(--accent-cyan)', opacity: 0.85, borderRadius: '2px' }}></div>
-                <div style={{ width: '80px', height: '100px', background: 'rgba(0,0,0,0.85)', border: '1px dashed rgba(238,240,245,0.12)', marginLeft: '12px' }}></div>
+              <div style={{ position: 'relative', width: '260px', height: '260px', background: '#060913', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-xs)' }}>
+                <div style={{ width: '60px', height: '45px', background: 'var(--highlight-green)', opacity: 0.85, borderRadius: '2px' }}></div>
+                <div style={{ width: '80px', height: '100px', background: 'rgba(168, 85, 247, 0.4)', border: '1px dashed rgba(168, 85, 247, 0.6)', marginLeft: '12px' }}></div>
                 <div style={{ position: 'absolute', bottom: '12px', fontSize: '11px', color: 'var(--text-muted)' }}>
-                  Cyan = Highlight &bull; Dark = Shadow
+                  Green = Highlight &bull; Purple = Shadow
                 </div>
               </div>
             )}
@@ -142,29 +143,29 @@ export default function PhysicsInspector() {
         </div>
       </div>
 
-      {/* Physics Metrics Grid */}
+      {/* Physics Metrics Inset Grid */}
       <div className="grid-4" style={{ marginTop: '16px' }}>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Specular highlight</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 500, color: 'var(--accent-cyan)', marginTop: '2px' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Specular highlight</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--highlight-green)', marginTop: '2px' }}>
             {result.highlight_area} px
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Occlusion shadow</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 500, color: 'var(--text-bright)', marginTop: '2px' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Occlusion shadow</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--shadow-purple)', marginTop: '2px' }}>
             {result.shadow_area} px
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Highlight / shadow ratio</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 500, color: 'var(--text-bright)', marginTop: '2px' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Highlight / shadow ratio</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--glow-cyan)', marginTop: '2px' }}>
             {result.ratio}
           </div>
         </div>
-        <div style={{ background: 'var(--bg-elevated)', padding: '12px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Grazing incidence angle</div>
-          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 500, color: 'var(--text-bright)', marginTop: '2px' }}>
+        <div className="inset" style={{ padding: '14px', textAlign: 'center' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Grazing incidence angle</div>
+          <div className="font-mono tabular-nums" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-bright)', marginTop: '2px' }}>
             {result.aspect_angle}
           </div>
         </div>

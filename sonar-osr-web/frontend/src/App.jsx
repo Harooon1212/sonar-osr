@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Backdrop from './components/Backdrop';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -14,6 +15,7 @@ export default function App() {
   return (
     <Router>
       <div className="app-container">
+        <Backdrop />
         <Navigation />
         <main className="main-content">
           <Routes>
@@ -21,6 +23,8 @@ export default function App() {
             <Route path="/demo" element={<LiveDemo />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/lab" element={<PipelineLab />} />
+            <Route path="/pipeline" element={<PipelineLab />} />
+            <Route path="/mission" element={<PipelineLab />} />
             <Route path="/methods" element={<Methods />} />
             <Route path="/dataset" element={<Dataset />} />
             <Route path="/about" element={<About />} />
