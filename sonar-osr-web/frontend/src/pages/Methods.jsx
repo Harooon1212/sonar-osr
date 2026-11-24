@@ -66,7 +66,7 @@ export default function Methods() {
 
           <div className="plate" style={{ padding: '14px 18px', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--highlight-green)', marginBottom: '14px' }}>
             <div style={{ color: 'var(--text-faint)', fontSize: '11px', marginBottom: '4px' }}>Class centroid definition (2048-D feature space)</div>
-            C_k = (1 / N_k) * Σ_{i=1}^{N_k} f(x_i)
+            {"C_k = (1 / N_k) * Σ_{i=1}^{N_k} f(x_i)"}
           </div>
 
           <div className="inset" style={{ padding: '14px', fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -93,7 +93,7 @@ export default function Methods() {
 
           <div className="plate" style={{ padding: '14px 18px', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--semantic-warning)', marginBottom: '14px' }}>
             <div style={{ color: 'var(--text-faint)', fontSize: '11px', marginBottom: '4px' }}>Softmax confidence score</div>
-            y_hat = argmax_k p_k(x), &emsp; known iff max_k p_k(x) &ge; τ
+            {"y_hat = argmax_k p_k(x),    known iff max_k p_k(x) ≥ τ"}
           </div>
 
           <div className="inset" style={{ padding: '14px', fontSize: '13px', color: 'var(--text-muted)' }}>
