@@ -1,0 +1,30 @@
+# Node & Frontend dependencies
+**/node_modules/
+.agents/
+.gemini/
+.vscode/
+.idea/
+
+# Large Datasets & Model Weights (Excluded from Git for fast, lightweight deployment)
+md_fls_dataset/
+outputs/models/
+*.pth
+*.pt
+*.onnx
+
+# Python & Environment
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv
+venv/
+ENV/
+
+# OS and Binary files
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+*.exe
+cloudflared.exe

@@ -1,0 +1,51 @@
+[
+  {
+    "filename": "propeller-sample.png",
+    "class": "propeller",
+    "is_known": true,
+    "label": "Propeller (Known)",
+    "src": "/samples/propeller-sample.png"
+  },
+  {
+    "filename": "bottle-sample.png",
+    "class": "bottle",
+    "is_known": true,
+    "label": "Bottle (Known)",
+    "src": "/samples/bottle-sample.png"
+  },
+  {
+    "filename": "tire-sample.png",
+    "class": "tire",
+    "is_known": true,
+    "label": "Tire (Known)",
+    "src": "/samples/tire-sample.png"
+  },
+  {
+    "filename": "can-sample.png",
+    "class": "can",
+    "is_known": true,
+    "label": "Can (Known)",
+    "src": "/samples/can-sample.png"
+  },
+  {
+    "filename": "chain-sample.png",
+    "class": "chain",
+    "is_known": false,
+    "label": "Chain (Novel Unknown)",
+    "src": "/samples/chain-sample.png"
+  },
+  {
+    "filename": "valve-sample.png",
+    "class": "valve",
+    "is_known": false,
+    "label": "Valve (Novel Unknown)",
+    "src": "/samples/valve-sample.png"
+  },
+  {
+    "filename": "shampoo-sample.png",
+    "class": "shampoo-bottle",
+    "is_known": false,
+    "label": "Shampoo-Bottle (Novel Unknown)",
+    "src": "/samples/shampoo-sample.png"
+  }
+]
