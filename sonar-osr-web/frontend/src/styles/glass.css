@@ -9,59 +9,113 @@
 /* Tier 1: Shells, navigation, tab bars */
 .glass {
   background: var(--glass-1-bg);
-  -webkit-backdrop-filter: blur(var(--glass-1-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-1-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-1-blur)) saturate(190%) contrast(102%);
+  backdrop-filter: blur(var(--glass-1-blur)) saturate(190%) contrast(102%);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-panel);
-  box-shadow: var(--glass-edge), var(--glass-shadow);
-  transition: border-color 160ms var(--ease-standard), box-shadow 160ms var(--ease-standard);
+  box-shadow: var(--glass-shadow), var(--glass-edge);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Tier 2: Primary cards sitting directly on the backdrop */
+.glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(
+    180deg, 
+    rgba(255, 255, 255, 0.18) 0%, 
+    rgba(255, 255, 255, 0.04) 50%, 
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tier 2: Primary cards sitting directly on the backdrop (Apple VisionOS Continuous Squircle) */
 .glass--card, .card {
   background: var(--glass-2-bg);
-  -webkit-backdrop-filter: blur(var(--glass-2-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-2-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-2-blur)) saturate(190%) contrast(102%);
+  backdrop-filter: blur(var(--glass-2-blur)) saturate(190%) contrast(102%);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-card);
-  box-shadow: var(--glass-edge), var(--glass-shadow);
-  transition: border-color 160ms var(--ease-standard), box-shadow 160ms var(--ease-standard);
+  box-shadow: var(--glass-shadow), var(--glass-edge), inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass--card::before, .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(
+    180deg, 
+    rgba(255, 255, 255, 0.18) 0%, 
+    rgba(255, 255, 255, 0.04) 50%, 
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.glass--card > *, .card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .glass--card:hover, .card:hover {
+  background: rgba(255, 255, 255, 0.12);
   border-color: var(--glass-border-strong);
-  box-shadow: var(--glass-edge), 0 12px 38px rgba(2, 6, 16, 0.6);
+  box-shadow: 0 35px 80px -10px rgba(0, 0, 0, 0.8), var(--glass-edge);
 }
 
 /* Tier 3: Floating layers, modals, popovers, tooltips */
 .glass--float {
   background: var(--glass-3-bg);
-  -webkit-backdrop-filter: blur(var(--glass-3-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-3-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-3-blur)) saturate(200%);
+  backdrop-filter: blur(var(--glass-3-blur)) saturate(200%);
   border: 1px solid var(--glass-border-strong);
   border-radius: var(--radius-card);
-  box-shadow: var(--glass-edge), 0 16px 48px rgba(2, 6, 16, 0.6);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), var(--glass-edge);
 }
 
-/* Data plate: Charts, tables, gauges, D3 SVG containers (Near-opaque, NO blur) */
+/* Data plate: Charts, tables, gauges, D3 SVG containers (Obsidian near-opaque, high contrast) */
 .plate {
   background: var(--glass-data-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
-/* Inset: Inside any glass panel (KPI tiles, showdown cards, controls - NO blur) */
+/* Inset: Inside any glass panel (Apple Recessed Obsidian Tray) */
 .inset {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-control);
-  transition: background-color 140ms var(--ease-standard), border-color 140ms var(--ease-standard);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .inset:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 /* Fallback: Browsers without backdrop-filter support */
