@@ -1,28 +1,40 @@
 :root {
   /* Ink Neutral Ramp (Maritime Deep Ocean) */
-  --bg-deepest: #07080d;
-  --bg-primary: #0b0d14;
-  --bg-card: #11141c;
-  --bg-elevated: #1a1e28;
-  --bg-overlay: rgba(7, 8, 13, 0.88);
+  --bg-deepest: #06080d;
+  --bg-primary: #0a0d14;
+  --bg-card: rgba(14, 18, 27, 0.75);
+  --bg-card-hover: rgba(20, 26, 38, 0.85);
+  --bg-elevated: rgba(24, 31, 46, 0.72);
+  --bg-elevated-hover: rgba(30, 39, 58, 0.85);
+  --bg-overlay: rgba(6, 8, 13, 0.90);
 
-  /* Quiet Hairlines (Primary text at 8% opacity) */
+  /* Glassmorphism Specs */
+  --glass-blur: blur(16px);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(56, 189, 248, 0.30);
+  --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.38);
+  --shadow-glass-hover: 0 14px 44px 0 rgba(0, 0, 0, 0.52);
+
+  /* Quiet Hairlines */
   --border-subtle: rgba(238, 240, 245, 0.08);
   --border-strong: rgba(238, 240, 245, 0.16);
   --border-focus: #38bdf8;
   --border-danger: rgba(229, 72, 77, 0.4);
 
-  /* Text Roles */
-  --text-primary: #eef0f5;
-  --text-main: #eef0f5;
-  --text-secondary: #a3a9b8;
-  --text-muted: #7a8296;
+  /* Text Roles (Optimized for WCAG AA contrast on abyssal glass) */
   --text-bright: #ffffff;
+  --text-main: #eef0f5;
+  --text-primary: #eef0f5;
+  --text-secondary: #9aa1b3;
+  --text-muted: #71798e;
 
-  /* Accent: Single intentional hydroacoustic cyan */
+  /* Accent: Hydroacoustic luminescent cyan */
   --accent-cyan: #38bdf8;
+  --accent-cyan-hover: #7dd3fc;
+  --accent-cyan-subtle: rgba(56, 189, 248, 0.12);
 
-  /* Semantic Colors (Toned to sit inside ink ramp) */
+  /* Semantic Colors */
   --semantic-positive: #4cc38a;
   --semantic-positive-subtle: rgba(76, 195, 138, 0.12);
   --semantic-negative: #e5484d;
@@ -30,7 +42,7 @@
   --semantic-warning: #f59e0b;
   --semantic-warning-subtle: rgba(245, 158, 11, 0.12);
 
-  /* Aliases for compatibility */
+  /* Aliases for backwards compatibility */
   --accent-green: var(--semantic-positive);
   --accent-green-subtle: var(--semantic-positive-subtle);
   --accent-red: var(--semantic-negative);
@@ -50,8 +62,8 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
 
-  /* Depth (Surface steps & quiet hairline highlight) */
-  --shadow-card: none;
-  --highlight-top: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* Depth & Physics-accurate Transitions */
+  --shadow-card: var(--shadow-glass);
+  --highlight-top: var(--glass-highlight);
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
 }

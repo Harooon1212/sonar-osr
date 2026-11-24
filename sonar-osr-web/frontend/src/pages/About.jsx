@@ -85,7 +85,7 @@ export default function About() {
               <div style={{ background: 'var(--bg-elevated)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
                 <div style={{ fontSize: '11px', color: 'var(--accent-cyan)', fontWeight: 500 }}>Project supervisor</div>
                 <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-bright)', marginTop: '4px' }}>
-                  Faculty of Computer Science
+                  Dr. Arif Ur Rahman
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
                   Department of Computer Science &bull; Bahria University Islamabad
@@ -93,12 +93,12 @@ export default function About() {
               </div>
 
               <div style={{ background: 'var(--bg-elevated)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ fontSize: '11px', color: 'var(--semantic-positive)', fontWeight: 500 }}>Research domain</div>
+                <div style={{ fontSize: '11px', color: 'var(--semantic-positive)', fontWeight: 500 }}>Student researcher</div>
                 <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-bright)', marginTop: '4px' }}>
-                  Autonomous systems and vision
+                  Haroon
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                  Sonar processing, metric learning & deep learning
+                  BS Computer Science &bull; Final Year Project 2026
                 </div>
               </div>
             </div>

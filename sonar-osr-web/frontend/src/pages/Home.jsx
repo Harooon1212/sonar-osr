@@ -15,7 +15,7 @@ export default function Home() {
         overflow: 'hidden',
         marginBottom: '24px'
       }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '32px', alignItems: 'center' }}>
+        <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '32px', alignItems: 'center' }}>
           <div>
             <div style={{
               display: 'inline-flex',
