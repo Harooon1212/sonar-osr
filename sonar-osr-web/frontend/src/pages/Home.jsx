@@ -19,11 +19,11 @@ export default function Home() {
                 <span>ARIS Explorer 3000 &bull; 3.0 MHz &bull; 96 Beams</span>
               </div>
 
-              <h1 style={{ fontSize: '34px', lineHeight: 1.2, fontWeight: 600, marginBottom: '16px', letterSpacing: '-0.025em', color: '#ffffff' }}>
+              <h1 style={{ fontSize: '34px', lineHeight: 1.2, fontWeight: 600, marginBottom: '16px', letterSpacing: '-0.025em', color: 'var(--text-bright)' }}>
                 Open-set recognition for underwater sonar imagery
               </h1>
 
-              <p style={{ fontSize: '14.5px', color: 'rgba(255, 255, 255, 0.72)', lineHeight: 1.65, maxWidth: '640px', marginBottom: '28px' }}>
+              <p style={{ fontSize: '14.5px', color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: '640px', marginBottom: '28px' }}>
                 Standard deep neural networks force acoustic echoes into known categories with dangerously high false confidence. 
                 Our framework equips Autonomous Underwater Vehicles (AUVs) with bounded metric hyperspheres to safely reject 
                 unseen marine hazards and unknown objects in low-visibility seabed environments.
@@ -66,7 +66,7 @@ export default function Home() {
                   <div style={{ position: 'absolute', top: '65%', left: '72%', width: '7px', height: '7px', background: 'var(--alert-red)', borderRadius: '50%', boxShadow: '0 0 10px #f87171' }} title="Unknown anomaly"></div>
                 </div>
               </div>
-              <div className="font-mono tabular-nums" style={{ marginTop: '12px', fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', letterSpacing: '0.04em' }}>
+              <div className="font-mono tabular-nums" style={{ marginTop: '12px', fontSize: '11px', color: 'var(--text-faint)', letterSpacing: '0.04em' }}>
                 RANGE 15.0m &bull; AZIMUTH 30° &bull; 96 BEAMS
               </div>
             </div>
@@ -81,64 +81,64 @@ export default function Home() {
             
             <div className="apple-recessed-plate" style={{ padding: '18px 20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Primary Metric</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Primary Metric</span>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--glow-cyan)' }}></span>
               </div>
               <div className="font-mono tabular-nums" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--glow-cyan)', letterSpacing: '-0.02em' }}>
                 0.9255
               </div>
-              <div style={{ fontSize: '13px', color: '#ffffff', fontWeight: 500, marginTop: '2px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-bright)', fontWeight: 500, marginTop: '2px' }}>
                 Best AUROC (DML)
               </div>
-              <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', marginTop: '2px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '2px' }}>
                 Semi-hard triplets &bull; Margin 0.20
               </div>
             </div>
 
             <div className="apple-recessed-plate" style={{ padding: '18px 20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Safety Margin</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Safety Margin</span>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--highlight-green)' }}></span>
               </div>
               <div className="font-mono tabular-nums" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--highlight-green)', letterSpacing: '-0.02em' }}>
                 11.71%
               </div>
-              <div style={{ fontSize: '13px', color: '#ffffff', fontWeight: 500, marginTop: '2px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-bright)', fontWeight: 500, marginTop: '2px' }}>
                 Lowest FPR (SVDD)
               </div>
-              <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', marginTop: '2px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '2px' }}>
                 Defensive underwater navigation
               </div>
             </div>
 
             <div className="apple-recessed-plate" style={{ padding: '18px 20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Known Accuracy</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Known Accuracy</span>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#38bdf8' }}></span>
               </div>
-              <div className="font-mono tabular-nums" style={{ fontSize: '28px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em' }}>
+              <div className="font-mono tabular-nums" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-bright)', letterSpacing: '-0.02em' }}>
                 94.10%
               </div>
-              <div style={{ fontSize: '13px', color: '#ffffff', fontWeight: 500, marginTop: '2px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-bright)', fontWeight: 500, marginTop: '2px' }}>
                 Known-class recall (TPR)
               </div>
-              <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', marginTop: '2px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '2px' }}>
                 Closed-set validation
               </div>
             </div>
 
             <div className="apple-recessed-plate" style={{ padding: '18px 20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Corpus</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Corpus</span>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#a855f7' }}></span>
               </div>
-              <div className="font-mono tabular-nums" style={{ fontSize: '28px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em' }}>
+              <div className="font-mono tabular-nums" style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-bright)', letterSpacing: '-0.02em' }}>
                 2,364
               </div>
-              <div style={{ fontSize: '13px', color: '#ffffff', fontWeight: 500, marginTop: '2px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-bright)', fontWeight: 500, marginTop: '2px' }}>
                 Dataset images (MD-FLS)
               </div>
-              <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.45)', marginTop: '2px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-faint)', marginTop: '2px' }}>
                 Turbid seawater tank acoustic echoes
               </div>
             </div>
@@ -156,18 +156,18 @@ export default function Home() {
                 <AlertCircle size={16} strokeWidth={2} style={{ color: 'var(--alert-red)' }} />
               </div>
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff' }}>The closed-world failure</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-bright)' }}>The closed-world failure</h3>
                 <span style={{ fontSize: '11px', color: 'var(--alert-red)', fontFamily: 'var(--font-mono)' }}>Standard Softmax classification</span>
               </div>
             </div>
-            <p style={{ fontSize: '13.5px', color: 'rgba(255, 255, 255, 0.72)', lineHeight: 1.65 }}>
+            <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', lineHeight: 1.65 }}>
               Standard Softmax classifiers divide Euclidean space with linear hyperplanes, leaving unbounded 
               receptive fields. When an AUV encounters novel seabed debris, submerged mines, or structural hazards, 
               the network forces a closed-world label with high artificial confidence (99%+ Softmax probability), 
               causing catastrophic false identifications during autonomous missions.
             </p>
             <div className="apple-recessed-plate" style={{ padding: '10px 14px', marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>MSP Decision Boundary</span>
+              <span style={{ color: 'var(--text-faint)' }}>MSP Decision Boundary</span>
               <span style={{ color: 'var(--alert-red)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>Unbounded &bull; AUROC 0.8165</span>
             </div>
           </div>
@@ -180,18 +180,18 @@ export default function Home() {
                 <CheckCircle2 size={16} strokeWidth={2} style={{ color: 'var(--highlight-green)' }} />
               </div>
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff' }}>The open-set solution</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-bright)' }}>The open-set solution</h3>
                 <span style={{ fontSize: '11px', color: 'var(--highlight-green)', fontFamily: 'var(--font-mono)' }}>Bounded metric hyperspheres</span>
               </div>
             </div>
-            <p style={{ fontSize: '13.5px', color: 'rgba(255, 255, 255, 0.72)', lineHeight: 1.65 }}>
+            <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', lineHeight: 1.65 }}>
               Our dual-paradigm architecture enforces closed boundaries around known acoustic classes:
-              <strong style={{ color: '#ffffff' }}> One-class SVDD (nearest centroid)</strong> projects known features into high-dimensional clusters, while 
-              <strong style={{ color: '#ffffff' }}> Deep metric learning (DML)</strong> uses semi-hard triplet mining to cluster known classes tightly 
+              <strong style={{ color: 'var(--text-bright)' }}> One-class SVDD (nearest centroid)</strong> projects known features into high-dimensional clusters, while 
+              <strong style={{ color: 'var(--text-bright)' }}> Deep metric learning (DML)</strong> uses semi-hard triplet mining to cluster known classes tightly 
               in a 128-D normalized embedding space. Any query exceeding decision radius τ is rejected as an anomaly.
             </p>
             <div className="apple-recessed-plate" style={{ padding: '10px 14px', marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>DML Decision Boundary</span>
+              <span style={{ color: 'var(--text-faint)' }}>DML Decision Boundary</span>
               <span style={{ color: 'var(--highlight-green)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>Bounded Radius &bull; AUROC 0.9255</span>
             </div>
           </div>
@@ -207,8 +207,8 @@ export default function Home() {
                 <Layers size={16} strokeWidth={2} style={{ color: 'var(--glow-cyan)' }} />
               </div>
               <div>
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff' }}>End-to-end processing & decision pipeline</h3>
-                <span style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}>Four-stage acoustic signal transformation and inference</span>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-bright)' }}>End-to-end processing & decision pipeline</h3>
+                <span style={{ fontSize: '12px', color: 'var(--text-faint)' }}>Four-stage acoustic signal transformation and inference</span>
               </div>
             </div>
             <span className="vision-badge font-mono text-[11px]">Zero data leakage protocol</span>
@@ -218,32 +218,32 @@ export default function Home() {
             
             <div className="apple-recessed-plate" style={{ padding: '16px' }}>
               <div className="font-mono" style={{ color: 'var(--glow-cyan)', fontSize: '11px', marginBottom: '4px', fontWeight: 600 }}>PHASE 01</div>
-              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: '#ffffff' }}>Acoustic denoising</div>
-              <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.55 }}>
+              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: 'var(--text-bright)' }}>Acoustic denoising</div>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.55 }}>
                 Median filtering attenuates multiplicative Rayleigh speckle; CLAHE equalizes acoustic attenuation across sensor range bins.
               </p>
             </div>
 
             <div className="apple-recessed-plate" style={{ padding: '16px' }}>
               <div className="font-mono" style={{ color: 'var(--glow-cyan)', fontSize: '11px', marginBottom: '4px', fontWeight: 600 }}>PHASE 02</div>
-              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: '#ffffff' }}>Physics decomposition</div>
-              <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.55 }}>
+              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: 'var(--text-bright)' }}>Physics decomposition</div>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.55 }}>
                 Otsu and percentile decomposition isolates specular target backscatter, acoustic occlusion shadow, and seabed reverberation.
               </p>
             </div>
 
             <div className="apple-recessed-plate" style={{ padding: '16px' }}>
               <div className="font-mono" style={{ color: 'var(--glow-cyan)', fontSize: '11px', marginBottom: '4px', fontWeight: 600 }}>PHASE 03</div>
-              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: '#ffffff' }}>Feature embedding</div>
-              <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.55 }}>
+              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: 'var(--text-bright)' }}>Feature embedding</div>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.55 }}>
                 ResNet-50 backbone maps acoustic echograms into 2048-D latent representations, projected to a 128-D L2 hypersphere.
               </p>
             </div>
 
             <div className="apple-recessed-plate" style={{ padding: '16px' }}>
               <div className="font-mono" style={{ color: 'var(--glow-cyan)', fontSize: '11px', marginBottom: '4px', fontWeight: 600 }}>PHASE 04</div>
-              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: '#ffffff' }}>Open-set decision</div>
-              <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.55 }}>
+              <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '6px', color: 'var(--text-bright)' }}>Open-set decision</div>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.55 }}>
                 Euclidean distance to class centroids is scored against τ: accepted points receive closed-set labels; outliers trigger anomaly avoidance.
               </p>
             </div>
