@@ -116,10 +116,11 @@ async def predict_sonar_image(
     if tau_val is None:
         tau_val = 0.50
 
-    # 1. Single model prediction
+    # 1. Single model prediction (default to champion DML when method is 'all')
+    chosen_method = "dml" if method.lower() == "all" else method
     res = predictor.predict(
         pil_img,
-        method=method,
+        method=chosen_method,
         image_name=filename,
         custom_threshold=tau_val,
     )

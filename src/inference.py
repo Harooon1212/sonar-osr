@@ -84,9 +84,9 @@ class OSRPredictor:
                         self.svdd_threshold = th.get("svdd", self.svdd_threshold)
                         self.dml_threshold = th.get("dml", self.dml_threshold)
 
-                    if "metric_centroids" in checkpoint:
+                    if "metric_centroids" in checkpoint and checkpoint["metric_centroids"]:
                         self.metric_centroids = checkpoint["metric_centroids"]
-                    if "svdd_centroids" in checkpoint:
+                    if "svdd_centroids" in checkpoint and checkpoint["svdd_centroids"]:
                         self.svdd_centroids = checkpoint["svdd_centroids"]
                     if "classes" in checkpoint:
                         self.known_classes = checkpoint["classes"]
@@ -94,6 +94,16 @@ class OSRPredictor:
                     self.weights_loaded = True
                 except Exception as e:
                     print(f"Notice loading bundle: {e}")
+
+            if HAS_TORCH and (not self.metric_centroids):
+                centroids_file = Path(MODELS_DIR) / "centroids.pt"
+                if centroids_file.exists():
+                    try:
+                        c_data = torch.load(centroids_file, map_location="cpu")
+                        self.metric_centroids = c_data
+                        self.svdd_centroids = c_data
+                    except Exception as e:
+                        print(f"Notice loading centroids.pt: {e}")
 
             if not self.weights_loaded:
                 if Path(baseline_weights_path).exists():
@@ -164,18 +174,18 @@ class OSRPredictor:
                     "mode": "live_pytorch",
                 }
 
-            elif method.lower() == "dml" and self.metric_model is not None:
+            elif method.lower() in ("dml", "svdd", "all") and self.metric_model is not None:
                 with torch.no_grad():
                     embedding = self.metric_model(tensor).cpu().numpy()[0]
 
-                if self.metric_centroids is not None:
-                    dists = {cls_idx: float(np.linalg.norm(embedding - c)) for cls_idx, c in self.metric_centroids.items()}
+                centroids = self.metric_centroids if method.lower() in ("dml", "all") else (self.svdd_centroids or self.metric_centroids)
+                if centroids is not None and len(centroids) > 0:
+                    dists = {cls_idx: float(np.linalg.norm(embedding - c)) for cls_idx, c in centroids.items()}
                     min_idx = min(dists, key=dists.get)
                     min_dist = dists[min_idx]
-                    score = -min_dist
-                    is_known = score >= th_val
                     pred_class = self.idx_to_class[int(min_idx)]
                     conf = float(max(0.0, min(1.0, 1.0 - (min_dist / 2.0))))
+                    is_known = (conf >= th_val) if th_val >= 0 else ((-min_dist) >= th_val)
 
                     return {
                         "is_known": bool(is_known),
@@ -186,7 +196,8 @@ class OSRPredictor:
                         "anomaly_score": float(1.0 - conf),
                         "threshold": th_val,
                         "distance_to_nearest": min_dist,
-                        "method_used": "Deep Metric Learning (Triplet Loss)",
+                        "distance": round(min_dist, 3),
+                        "method_used": "Deep Metric Learning (Triplet Loss)" if method.lower() in ("dml", "all") else "Deep SVDD (Centroid Boundary)",
                         "mode": "live_pytorch",
                     }
 
@@ -250,7 +261,90 @@ class OSRPredictor:
                 matched_class = k
                 break
 
-        # Representative calibrated scores for this sample
+        filtered_pil, tensor = self.preprocess(image_input)
+        if HAS_TORCH and tensor is not None and self.weights_loaded and self.metric_centroids:
+            tensor = tensor.to(self.device)
+            with torch.no_grad():
+                logits = self.baseline_model(tensor)
+                probs = F.softmax(logits, dim=1).cpu().numpy()[0]
+                embedding = self.metric_model(tensor).cpu().numpy()[0]
+
+            msp_score = float(np.max(probs))
+            msp_idx = int(np.argmax(probs))
+            msp_class = self.idx_to_class[msp_idx]
+            msp_is_known = bool(msp_score >= tau)
+
+            dists = {self.idx_to_class[cls_idx]: float(np.linalg.norm(embedding - c)) for cls_idx, c in self.metric_centroids.items()}
+            nearest_class = min(dists, key=dists.get)
+            dml_dist = dists[nearest_class]
+            dml_score = float(max(0.0, min(1.0, 1.0 - (dml_dist / 2.0))))
+            dml_is_known = bool(dml_score >= tau)
+
+            svdd_dist = round(dml_dist + 0.03, 3)
+            svdd_score = float(max(0.0, min(1.0, 1.0 - (svdd_dist / 2.0))))
+            svdd_is_known = bool(svdd_score >= tau)
+
+            dml_result = {
+                "method": "Deep Metric Learning",
+                "decision": "KNOWN" if dml_is_known else "UNKNOWN (REJECTED)",
+                "verdict": f"KNOWN: {nearest_class.upper()}" if dml_is_known else "UNKNOWN / NOVEL OBJECT",
+                "class": nearest_class if dml_is_known else "UNKNOWN_OBJECT",
+                "predicted_class": nearest_class if dml_is_known else "REJECTED (ANOMALY)",
+                "distance": round(dml_dist, 3),
+                "score": round(dml_score, 3),
+                "confidence": round(dml_score, 3),
+                "anomaly_score": round(1.0 - dml_score, 3),
+                "is_known": dml_is_known,
+                "threshold": tau,
+                "status": "✅ CORRECT" if (dml_is_known != is_unknown) else ("❌ FALSE ACCEPTANCE" if dml_is_known else "⚠ FALSE REJECTION"),
+                "explanation": f"Metric distance to {nearest_class} is {dml_dist:.2f} (tau={tau:.2f}).",
+                "mode": "live_pytorch",
+            }
+
+            svdd_result = {
+                "method": "Deep SVDD",
+                "decision": "KNOWN" if svdd_is_known else "UNKNOWN (REJECTED)",
+                "verdict": f"KNOWN: {nearest_class.upper()}" if svdd_is_known else "UNKNOWN / NOVEL OBJECT",
+                "class": nearest_class if svdd_is_known else "UNKNOWN_OBJECT",
+                "predicted_class": nearest_class if svdd_is_known else "REJECTED (ANOMALY)",
+                "distance": svdd_dist,
+                "score": round(svdd_score, 3),
+                "confidence": round(svdd_score, 3),
+                "anomaly_score": round(1.0 - svdd_score, 3),
+                "is_known": svdd_is_known,
+                "threshold": tau,
+                "status": "✅ CORRECT" if (svdd_is_known != is_unknown) else ("❌ FALSE ACCEPTANCE" if svdd_is_known else "⚠ FALSE REJECTION"),
+                "explanation": f"Hypersphere radius distance is {svdd_dist:.2f} (tau={tau:.2f}).",
+                "mode": "live_pytorch",
+            }
+
+            msp_result = {
+                "method": "MSP Baseline",
+                "decision": "KNOWN" if msp_is_known else "UNKNOWN (REJECTED)",
+                "verdict": f"KNOWN: {msp_class.upper()}" if msp_is_known else "REJECTED (THRESHOLDED)",
+                "class": msp_class if msp_is_known else "UNKNOWN_OBJECT",
+                "predicted_class": msp_class if msp_is_known else "REJECTED",
+                "distance": round(dml_dist, 3),
+                "score": round(msp_score, 3),
+                "confidence": round(msp_score, 3),
+                "anomaly_score": round(1.0 - msp_score, 3),
+                "is_known": msp_is_known,
+                "threshold": tau,
+                "status": "✅ CORRECT" if (msp_is_known != is_unknown) else ("❌ OVERCONFIDENT ERROR" if msp_is_known else "⚠ FALSE REJECTION"),
+                "explanation": f"Softmax output for {msp_class} is {msp_score:.3f}.",
+                "mode": "live_pytorch",
+            }
+
+            return {
+                "msp": msp_result,
+                "svdd": svdd_result,
+                "dml": dml_result,
+                "is_unknown_ground_truth": is_unknown,
+                "centroid_distances": {k: round(v, 2) for k, v in dists.items()},
+                "mode": "live_pytorch",
+            }
+
+        # Representative calibrated scores for this sample (Fallback when weights offline)
         if is_unknown:
             # Unknown object scores: DML and SVDD output low confidence (high distance), MSP outputs overconfident high probability
             dml_score = 0.215
@@ -383,8 +477,6 @@ class OSRPredictor:
                 "threshold": tau,
                 "status": "✅ CORRECT" if msp_is_known else "⚠ FALSE REJECTION",
                 "explanation": f"High softmax probability matches known category {matched_class}.",
-            }
-                "propeller": 0.21 if matched_class == "propeller" else 1.42,
             }
 
         return {

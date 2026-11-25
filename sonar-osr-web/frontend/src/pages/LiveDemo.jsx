@@ -273,7 +273,12 @@ export default function LiveDemo() {
   const distances = normalizeDistances(result);
   const predictedClass = result?.predicted_class || result?.class || result?.top_known_match || '—';
   const isKnown = Boolean(result?.is_known);
-  const mode = result?.mode;
+  const mode =
+    result?.mode === 'live_pytorch' ||
+    result?.showdown?.mode === 'live_pytorch' ||
+    result?.showdown?.dml?.mode === 'live_pytorch'
+      ? 'live_pytorch'
+      : result?.mode;
 
   const modeBadge = error ? (
     <Badge tone="bad">Backend offline</Badge>
