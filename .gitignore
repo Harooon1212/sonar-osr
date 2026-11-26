@@ -4,13 +4,7 @@
 .gemini/
 .vscode/
 .idea/
-
-# Large Datasets & Model Weights (Excluded from Git for fast, lightweight deployment)
-md_fls_dataset/
-outputs/models/
-*.pth
-*.pt
-*.onnx
+.codex/
 
 # Python & Environment
 __pycache__/

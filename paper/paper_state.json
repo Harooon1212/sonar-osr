@@ -1,0 +1,31 @@
+{
+  "schema_version": "ai-research-writing/paper-state-v1",
+  "mode": "full-paper",
+  "stage": "packaged-for-overleaf",
+  "target_venue": "IEEE Conference (IBCAST / ICET / INMIC / FIT, 6-page IEEEtran)",
+  "main_tex": "main.tex",
+  "bibliography": "references.bib",
+  "required_artifacts": [
+    "experiment_inventory.md",
+    "numeric_evidence.json",
+    "paper_story.md",
+    "claim_evidence_map.md",
+    "citation_requests.json",
+    "citation_verification.md",
+    "figures/figure_plan.md",
+    "reviewer_analysis.md",
+    "build_check.md",
+    "plan/progress.md"
+  ],
+  "blockers": [
+    "No local TeX compiler (pdflatex/bibtex/tectonic) installed on this Windows host; Overleaf PDF compilation pending."
+  ],
+  "build": {
+    "status": "blocked",
+    "command": "pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex",
+    "pdf": "main.pdf",
+    "external_inputs": [],
+    "input_sha256": "",
+    "pdf_sha256": ""
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "totals": {
+    "dataset_total": 2364,
+    "known_total": 1766,
+    "unknown_total": 598,
+    "train_known": 1233,
+    "val_known": 262,
+    "test_known": 271,
+    "test_unknown": 598,
+    "test_combined": 869,
+    "known_classes": 6,
+    "unknown_classes": 4,
+    "total_classes": 10,
+    "seed": 42
+  },
+  "classes": {
+    "bottle": {
+      "role": "known",
+      "label": 0,
+      "total": 449,
+      "train": 314,
+      "val": 67,
+      "test": 68,
+      "mode_w": 79,
+      "mode_h": 97,
+      "brightness": 103.6,
+      "contrast": 38.68,
+      "snr": 2.69,
+      "loss_weight": 0.6545
+    },
+    "can": {
+      "role": "known",
+      "label": 1,
+      "total": 367,
+      "train": 256,
+      "val": 55,
+      "test": 56,
+      "mode_w": 68,
+      "mode_h": 80,
+      "brightness": 114.27,
+      "contrast": 37.45,
+      "snr": 3.13,
+      "loss_weight": 0.8027
+    },
+    "tire": {
+      "role": "known",
+      "label": 2,
+      "total": 331,
+      "train": 231,
+      "val": 49,
+      "test": 51,
+      "mode_w": 85,
+      "mode_h": 88,
+      "brightness": 76.91,
+      "contrast": 36.15,
+      "snr": 2.15,
+      "loss_weight": 0.8896
+    },
+    "drink-carton": {
+      "role": "known",
+      "label": 3,
+      "total": 349,
+      "train": 244,
+      "val": 52,
+      "test": 53,
+      "mode_w": 50,
+      "mode_h": 52,
+      "brightness": 109.62,
+      "contrast": 45.53,
+      "snr": 2.45,
+      "loss_weight": 0.8422
+    },
+    "hook": {
+      "role": "known",
+      "label": 4,
+      "total": 133,
+      "train": 93,
+      "val": 19,
+      "test": 21,
+      "mode_w": 115,
+      "mode_h": 81,
+      "brightness": 108.15,
+      "contrast": 41.6,
+      "snr": 2.62,
+      "loss_weight": 2.2097
+    },
+    "propeller": {
+      "role": "known",
+      "label": 5,
+      "total": 137,
+      "train": 95,
+      "val": 20,
+      "test": 22,
+      "mode_w": 131,
+      "mode_h": 128,
+      "brightness": 117.35,
+      "contrast": 32.61,
+      "snr": 3.67,
+      "loss_weight": 2.1632
+    },
+    "chain": {
+      "role": "unknown",
+      "label": -1,
+      "total": 226,
+      "train": 0,
+      "val": 0,
+      "test": 226,
+      "mode_w": 63,
+      "mode_h": 61,
+      "brightness": 120.4,
+      "contrast": 39.69,
+      "snr": 3.05
+    },
+    "valve": {
+      "role": "unknown",
+      "label": -1,
+      "total": 208,
+      "train": 0,
+      "val": 0,
+      "test": 208,
+      "mode_w": 91,
+      "mode_h": 102,
+      "brightness": 75.92,
+      "contrast": 38.43,
+      "snr": 1.98
+    },
+    "shampoo-bottle": {
+      "role": "unknown",
+      "label": -1,
+      "total": 99,
+      "train": 0,
+      "val": 0,
+      "test": 99,
+      "mode_w": 251,
+      "mode_h": 69,
+      "brightness": 115.94,
+      "contrast": 41.39,
+      "snr": 2.79
+    },
+    "standing-bottle": {
+      "role": "unknown",
+      "label": -1,
+      "total": 65,
+      "train": 0,
+      "val": 0,
+      "test": 65,
+      "mode_w": 176,
+      "mode_h": 48,
+      "brightness": 117.53,
+      "contrast": 39.24,
+      "snr": 3.01
+    }
+  },
+  "baseline_closed_set": {
+    "best_val_acc_pct": 99.2,
+    "epochs_run": 12,
+    "test_correct": 269,
+    "test_total": 271,
+    "test_acc": 0.9926,
+    "macro_precision": 0.9939,
+    "macro_recall": 0.99,
+    "macro_f1": 0.9918,
+    "weighted_precision": 0.9928,
+    "weighted_recall": 0.9926,
+    "weighted_f1": 0.9926,
+    "per_class": {
+      "bottle": {
+        "precision": 1.0,
+        "recall": 0.9853,
+        "f1": 0.9926,
+        "support": 68,
+        "correct": 67
+      },
+      "can": {
+        "precision": 0.9825,
+        "recall": 1.0,
+        "f1": 0.9912,
+        "support": 56,
+        "correct": 56
+      },
+      "tire": {
+        "precision": 0.9808,
+        "recall": 1.0,
+        "f1": 0.9903,
+        "support": 51,
+        "correct": 51
+      },
+      "drink-carton": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 53,
+        "correct": 53
+      },
+      "hook": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 21,
+        "correct": 21
+      },
+      "propeller": {
+        "precision": 1.0,
+        "recall": 0.9545,
+        "f1": 0.9767,
+        "support": 22,
+        "correct": 21
+      }
+    }
+  },
+  "per_unknown_counts": {
+    "MSP": {
+      "chain": {
+        "rate_pct": 66.37,
+        "rejected": 150,
+        "total": 226
+      },
+      "valve": {
+        "rate_pct": 94.71,
+        "rejected": 197,
+        "total": 208
+      },
+      "shampoo-bottle": {
+        "rate_pct": 100.0,
+        "rejected": 99,
+        "total": 99
+      },
+      "standing-bottle": {
+        "rate_pct": 100.0,
+        "rejected": 65,
+        "total": 65
+      }
+    },
+    "SVDD": {
+      "chain": {
+        "rate_pct": 70.8,
+        "rejected": 160,
+        "total": 226
+      },
+      "valve": {
+        "rate_pct": 91.35,
+        "rejected": 190,
+        "total": 208
+      },
+      "shampoo-bottle": {
+        "rate_pct": 100.0,
+        "rejected": 99,
+        "total": 99
+      },
+      "standing-bottle": {
+        "rate_pct": 100.0,
+        "rejected": 65,
+        "total": 65
+      }
+    },
+    "MetricLearning": {
+      "chain": {
+        "rate_pct": 80.53,
+        "rejected": 182,
+        "total": 226
+      },
+      "valve": {
+        "rate_pct": 92.79,
+        "rejected": 193,
+        "total": 208
+      },
+      "shampoo-bottle": {
+        "rate_pct": 100.0,
+        "rejected": 99,
+        "total": 99
+      },
+      "standing-bottle": {
+        "rate_pct": 100.0,
+        "rejected": 65,
+        "total": 65
+      }
+    }
+  },
+  "architecture": {
+    "baseline_total_params": 24560198,
+    "baseline_trainable_params": 23124806,
+    "baseline_frozen_params": 1435392,
+    "dml_total_params": 24623808,
+    "dml_trainable_params": 24623808,
+    "dml_embedding_dim": 128,
+    "svdd_feature_dim": 2048,
+    "batch_size": 32,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "triplet_margin": 0.2,
+    "ocsvm_nu": 0.1,
+    "clahe_clip": 2.0,
+    "clahe_tile": 8,
+    "median_kernel": 3,
+    "input_size": 224
+  }
+}

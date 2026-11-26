@@ -1,0 +1,14 @@
+# Claim-Evidence Map
+
+| ID | Claim | Section | Evidence source / JSON pointer / Figure | Relation | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| C1 | Closed-set ResNet-50 reaches `99.26%` (`269/271`) accuracy on known FLS test targets with `99.2%` best val accuracy. | Sec IV-A | `data/dataset_and_baseline.json#/baseline_closed_set`, `../paper_figures/confusion_matrix_baseline.png`, Table II | direct | verified |
+| C2 | DML nearest-centroid achieves `100.00%` (`1.0`) closed-set accuracy on known test samples. | Sec IV-A | `data/all_results.json#/MetricLearning/closed_acc`, Table II | direct | verified |
+| C3 | End-to-end DML on $S^{127}$ outperforms MSP and SVDD across all five OSR metrics (`0.9603` AUROC, `0.9235` AP, `0.9077` TPR, `0.0987` FPR, `0.9013` UDR). | Abstract, Sec I, Sec IV-B | `data/all_results.json#/MetricLearning`, `figures/osr_roc_pr_comparison.png`, Table III | direct | verified |
+| C4 | Single-center Global Centroid SVDD collapses (`0.2371` AUROC, `0.2064` AP, `0.9298` FPR, `0.0702` UDR), performing worse than random guessing. | Abstract, Sec I, Sec IV-C | `data/all_results.json#/SVDD/variants/Global Centroid`, `figures/svdd_failure_panels.png` | direct | verified |
+| C5 | Switching from Global Centroid to class-conditional Nearest Centroid SVDD raises AUROC to `0.9175`, AP to `0.8568`, and UDR to `0.8595`. | Sec I, Sec IV-C | `data/all_results.json#/SVDD/variants/Nearest Centroid`, `figures/svdd_failure_panels.png` | direct | verified |
+| C6 | MSP confidence scores pile tightly near `1.0`, forcing Youden's $J$ to $\tau^* = 0.9980$ with `0.7747` AP and `0.1455` FPR. | Abstract, Sec IV-D | `data/all_results.json#/MSP`, `figures/msp_distributions.png` | direct | verified |
+| C7 | `chain` is the hardest unknown target across methods, improving from `66.37%` (`150/226`) MSP and `70.80%` (`160/226`) SVDD to `80.53%` (`182/226`) DML. | Sec IV-E | `data/dataset_and_baseline.json#/per_unknown_counts`, `../paper_figures/all_methods_unknown_detection.png`, Table IV | direct | verified |
+| C8 | Both withheld near-OOD container twins (`shampoo-bottle` 99, `standing-bottle` 65) reach `100.0%` rejection at each method's Youden threshold. | Sec IV-E | `data/all_results.json/*/per_class_detection`, Table IV | direct | verified |
+| C9 | Known embeddings form separated compact clusters in 128-D space while unknowns disperse into interstitial and peripheral voids. | Sec IV-E | `figures/dml_tsne_visualization.png` (600 test samples, `perplexity=30`) | visual | verified |
+| C10 | Dataset split (`1,233` train / `262` val / `869` test = `271` known + `598` unknown) has zero file leakage and up to `3.38x` training imbalance (`314` `bottle` vs. `93` `hook`). | Sec III-A | `data/dataset_and_baseline.json#/totals`, `data/dataset_and_baseline.json#/classes`, Table I | direct | verified |

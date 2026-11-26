@@ -1,0 +1,528 @@
+{
+  "schema_version": "ai-research-writing/citation-lock-v1",
+  "request_sha256": "a4a9ae1e5aa14d3d93d8def25cb71111e6b086ab5c8d0bc68a622e68d261641c",
+  "records": [
+    {
+      "key": "scheirer_2013_osr",
+      "identifier": "doi:10.1109/TPAMI.2012.256",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FTPAMI.2012.256?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:37:54.962063+00:00",
+      "metadata": {
+        "title": "Toward Open Set Recognition",
+        "authors": [
+          "W. J. Scheirer",
+          "A. de Rezende Rocha",
+          "A. Sapkota",
+          "T. E. Boult"
+        ],
+        "year": 2013,
+        "doi": "10.1109/tpami.2012.256",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "040d8ae4d4c9711a8515ff3894ba4fce4a7cf6af723ff57c1f8b9446625ab2db",
+      "claim_support_sha256": "4e4a27269f0c74bded713bd250c521b600ae7486c933ba0349b93036afe502e1",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "bendale_2016_openmax",
+      "identifier": "doi:10.1109/CVPR.2016.173",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FCVPR.2016.173?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:38:02.746624+00:00",
+      "metadata": {
+        "title": "Towards Open Set Deep Networks",
+        "authors": [
+          "Abhijit Bendale",
+          "Terrance E. Boult"
+        ],
+        "year": 2016,
+        "doi": "10.1109/cvpr.2016.173",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "b5bbd12f77e35da91123ae2556a589f9c3c7b834b3baf7ff80b41e04df16dda4",
+      "claim_support_sha256": "5dbe2e0ae89d3aebef2356d78e78b61eed7a83263d66fdce60922bb3c77a3eca",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "hendrycks_2017_msp",
+      "identifier": "arxiv:1610.02136",
+      "status": "verified",
+      "provider": "arxiv",
+      "request_url": "https://export.arxiv.org/api/query?id_list=1610.02136",
+      "checked_at": "2026-11-26T00:38:12.380952+00:00",
+      "metadata": {
+        "title": "A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks",
+        "authors": [
+          "Dan Hendrycks",
+          "Kevin Gimpel"
+        ],
+        "year": 2016,
+        "arxiv_id": "1610.02136",
+        "type": "preprint"
+      },
+      "metadata_sha256": "5cd5773a69f947fc4faf7d02949efb878f96e3f2ade16bf747121ea6613822b1",
+      "claim_support_sha256": "4d3253a7595fbbffce4593a74db31008eedc536f82ed929860622ed28ec04be3",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "geng_2021_survey",
+      "identifier": "doi:10.1109/TPAMI.2020.2981604",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FTPAMI.2020.2981604?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:38:24.860127+00:00",
+      "metadata": {
+        "title": "Recent Advances in Open Set Recognition: A Survey",
+        "authors": [
+          "Chuanxing Geng",
+          "Sheng-Jun Huang",
+          "Songcan Chen"
+        ],
+        "year": 2021,
+        "doi": "10.1109/tpami.2020.2981604",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "9cc806225a1a32ca2bc3d0b2364be8a3a868542f8cfb94399119651b2b79f38b",
+      "claim_support_sha256": "7bf18533d745151f9e8dd026130aeae67753eda080eacb0d19bd285b8c535dae",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "vaze_2022_osr",
+      "identifier": "arxiv:2110.06207",
+      "status": "verified",
+      "provider": "arxiv",
+      "request_url": "https://export.arxiv.org/api/query?id_list=2110.06207",
+      "checked_at": "2026-11-26T00:38:43.416433+00:00",
+      "metadata": {
+        "title": "Open-Set Recognition: a Good Closed-Set Classifier is All You Need?",
+        "authors": [
+          "Sagar Vaze",
+          "Kai Han",
+          "Andrea Vedaldi",
+          "Andrew Zisserman"
+        ],
+        "year": 2021,
+        "arxiv_id": "2110.06207",
+        "type": "preprint"
+      },
+      "metadata_sha256": "8a12e9f0f28be1d20bd333a7c167f18e10097cc371a88cf7c1bdb73eaa7207cf",
+      "claim_support_sha256": "5f3c975f80dcf9bea2c2968b4ccea305b75659c6c3a0383d4385862bc06eba17",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "valdenegro_2016_oceans",
+      "identifier": "doi:10.1109/OCEANS.2016.7761140",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FOCEANS.2016.7761140?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:38:57.562682+00:00",
+      "metadata": {
+        "title": "Object recognition in forward-looking sonar images with Convolutional Neural Networks",
+        "authors": [
+          "Matias Valdenegro-Toro"
+        ],
+        "year": 2016,
+        "doi": "10.1109/oceans.2016.7761140",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "1126939c59fc3258c11b7a39514abe5f64508e5ed9a6e34d03ff0fb4e0e7b3cc",
+      "claim_support_sha256": "972571e4f882e60c6d4d225a2f95f52883aad75f0aece2c62581290d29b5203d",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "valdenegro_2017_oceans",
+      "identifier": "doi:10.1109/OCEANSE.2017.8084987",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FOCEANSE.2017.8084987?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:38:58.832517+00:00",
+      "metadata": {
+        "title": "Best practices in convolutional networks for forward-looking sonar image recognition",
+        "authors": [
+          "Matias Valdenegro-Toro"
+        ],
+        "year": 2017,
+        "doi": "10.1109/oceanse.2017.8084987",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "1185b2fa32e7174080da6e878dfb16d4c3f8807f8ba9b0e21d1d4bc24d08a50d",
+      "claim_support_sha256": "7d8188437a0d1c702864022d92ff3a598604449754e28553ec145a48d3bfe8a1",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "williams_2016_icpr",
+      "identifier": "doi:10.1109/ICPR.2016.7900011",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FICPR.2016.7900011?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:00.143542+00:00",
+      "metadata": {
+        "title": "Underwater target classification in synthetic aperture sonar imagery using deep convolutional neural networks",
+        "authors": [
+          "David P. Williams"
+        ],
+        "year": 2016,
+        "doi": "10.1109/icpr.2016.7900011",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "64e8442ac7fe01d5bfd7874ec369d15911f3959b1aa5e824dfcde0792cc55b54",
+      "claim_support_sha256": "b2388d752b1ac63ef328c30e57c61a5380e768c2d32606758b6a40b89a9d5008",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "singh_2021_iccvw",
+      "identifier": "doi:10.1109/ICCVW54120.2021.00417",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FICCVW54120.2021.00417?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:01.613883+00:00",
+      "metadata": {
+        "title": "The Marine Debris Dataset for Forward-Looking Sonar Semantic Segmentation",
+        "authors": [
+          "Deepak Singh",
+          "Matias Valdenegro-Toro"
+        ],
+        "year": 2021,
+        "doi": "10.1109/iccvw54120.2021.00417",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "aa9e06af662f0e0154dfa91b7ce1dc1035e3816e902422f575952f0a80392aa8",
+      "claim_support_sha256": "33abd437c2246ca3189051bc51b119b6c000c54696fa05f2e7cf09167444e881",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "valdenegro_2025_datasets",
+      "identifier": "arxiv:2503.22880",
+      "status": "verified",
+      "provider": "arxiv",
+      "request_url": "https://export.arxiv.org/api/query?id_list=2503.22880",
+      "checked_at": "2026-11-26T00:39:02.813585+00:00",
+      "metadata": {
+        "title": "The Marine Debris Forward-Looking Sonar Datasets",
+        "authors": [
+          "Matias Valdenegro-Toro",
+          "Deepan Chakravarthi Padmanabhan",
+          "Deepak Singh",
+          "Bilal Wehbe",
+          "Yvan Petillot"
+        ],
+        "year": 2025,
+        "arxiv_id": "2503.22880",
+        "type": "preprint"
+      },
+      "metadata_sha256": "38a3e37efc88f004026cc070d3b658c30ebdbbfb74b819e837b1ea8d249c3d13",
+      "claim_support_sha256": "b01946fe510166819fe7f4a59263295b69f3b4e6459805596363877f884dc3d4",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "jiao_2024_sonar_osr",
+      "identifier": "doi:10.1016/j.eswa.2024.123495",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1016%2Fj.eswa.2024.123495?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:05.803685+00:00",
+      "metadata": {
+        "title": "Open-set recognition with long-tail sonar images",
+        "authors": [
+          "Wenpei Jiao",
+          "Jianlei Zhang",
+          "Chunyan Zhang"
+        ],
+        "year": 2024,
+        "doi": "10.1016/j.eswa.2024.123495",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "906bf220bc50aea289baeb0ce12a57987f1ae4c8543775f8122324195f1a75a6",
+      "claim_support_sha256": "f8d1c129dea64fca14fe35b064e01db3aed87ac7cc80b41173b05a9e55ae42ca",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "li_2026_copenmax",
+      "identifier": "doi:10.1016/j.eswa.2026.131463",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1016%2Fj.eswa.2026.131463?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:09.079333+00:00",
+      "metadata": {
+        "title": "Class-balanced OpenMax for open-set recognition with long-tail sonar images",
+        "authors": [
+          "Jie Li",
+          "Wenpei Jiao",
+          "Jianlei Zhang",
+          "Chunyan Zhang",
+          "Guangming Xie"
+        ],
+        "year": 2026,
+        "doi": "10.1016/j.eswa.2026.131463",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "94c9b9e8d83032e9c3b0fe26dfcf5e8f9ecfa96fa60f2e98be5193e18b9ab05b",
+      "claim_support_sha256": "2fb601def41f3213a284746155f27b8ef91bb63a50170c2d7f5fe03a90c32dc7",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "scholkopf_2001_ocsvm",
+      "identifier": "doi:10.1162/089976601750264965",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1162%2F089976601750264965?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:10.272933+00:00",
+      "metadata": {
+        "title": "Estimating the Support of a High-Dimensional Distribution",
+        "authors": [
+          "Bernhard Sch\u00f6lkopf",
+          "John C. Platt",
+          "John Shawe-Taylor",
+          "Alex J. Smola",
+          "Robert C. Williamson"
+        ],
+        "year": 2001,
+        "doi": "10.1162/089976601750264965",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "9cadb93d98695bbc69abb0799b9319c8547fe6e6ecec3d0c08a8f13522b13173",
+      "claim_support_sha256": "0fe82a955aa3de16ccb289ae65a6422744ddf5d418314c36c48efeaa7d8377a7",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "tax_2004_svdd",
+      "identifier": "doi:10.1023/B:MACH.0000008084.60811.49",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1023%2FB%3AMACH.0000008084.60811.49?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:11.510177+00:00",
+      "metadata": {
+        "title": "Support Vector Data Description",
+        "authors": [
+          "David M.J. Tax",
+          "Robert P.W. Duin"
+        ],
+        "year": 2004,
+        "doi": "10.1023/b:mach.0000008084.60811.49",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "86fcd1a23888cb5097898496968c96b361b2d8858dec15fe81a1744937f9bf67",
+      "claim_support_sha256": "26c65121f4fcbc5b46b1628e3c4ac16f2f3a0fbd05c1736968f87d24949ecdcf",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "chong_2020_ijcnn",
+      "identifier": "doi:10.1109/IJCNN48605.2020.9207209",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FIJCNN48605.2020.9207209?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:23.409888+00:00",
+      "metadata": {
+        "title": "Simple and Effective Prevention of Mode Collapse in Deep One-Class Classification",
+        "authors": [
+          "Penny Chong",
+          "Lukas Ruff",
+          "Marius Kloft",
+          "Alexander Binder"
+        ],
+        "year": 2020,
+        "doi": "10.1109/ijcnn48605.2020.9207209",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "322d771352802931045d853d0b9d60bbe9ee32c428208d44097575e86a0803e4",
+      "claim_support_sha256": "d4f7bc1515b3e80fa6849aa7e84e9cd42f1f7c7558c0efd82ecfe2bc3d629dda",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "schroff_2015_facenet",
+      "identifier": "doi:10.1109/CVPR.2015.7298682",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FCVPR.2015.7298682?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:39:33.392502+00:00",
+      "metadata": {
+        "title": "FaceNet: A unified embedding for face recognition and clustering",
+        "authors": [
+          "Florian Schroff",
+          "Dmitry Kalenichenko",
+          "James Philbin"
+        ],
+        "year": 2015,
+        "doi": "10.1109/cvpr.2015.7298682",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "ff9889aad78441de3f63c90749e001ca5607442d3c666ec3320a7ea0e230169b",
+      "claim_support_sha256": "d670dbdce76379261e961106bbbee5a50bda8fe3ada1692da3cceda58706d1f5",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "hoffer_2015_triplet",
+      "identifier": "arxiv:1412.6622",
+      "status": "verified",
+      "provider": "arxiv",
+      "request_url": "https://export.arxiv.org/api/query?id_list=1412.6622",
+      "checked_at": "2026-11-26T00:39:48.610237+00:00",
+      "metadata": {
+        "title": "Deep metric learning using Triplet network",
+        "authors": [
+          "Elad Hoffer",
+          "Nir Ailon"
+        ],
+        "year": 2014,
+        "arxiv_id": "1412.6622",
+        "type": "preprint"
+      },
+      "metadata_sha256": "37d5cf191cf01900c8da45a60209f28f2ff6cd8f8315f568fde0c8ba8239e3e2",
+      "claim_support_sha256": "866f95503658d35db4138bef63a879cb80da749f16fc1a2c83eadb8bf10474fc",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "musgrave_2020_pml",
+      "identifier": "arxiv:2008.09164",
+      "status": "verified",
+      "provider": "arxiv",
+      "request_url": "https://export.arxiv.org/api/query?id_list=2008.09164",
+      "checked_at": "2026-11-26T00:39:56.275772+00:00",
+      "metadata": {
+        "title": "PyTorch Metric Learning",
+        "authors": [
+          "Kevin Musgrave",
+          "Serge Belongie",
+          "Ser-Nam Lim"
+        ],
+        "year": 2020,
+        "arxiv_id": "2008.09164",
+        "type": "preprint"
+      },
+      "metadata_sha256": "112e43433aa42af7a86e15a75636707e0b7533db360f1e9bbb28af4e3febb939",
+      "claim_support_sha256": "7356a5c2631b8ae9a7e2a04c1c87d9dfad38b8c6760f3f6d554244fe71dc15b9",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "he_2016_resnet",
+      "identifier": "doi:10.1109/CVPR.2016.90",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1109%2FCVPR.2016.90?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:40:01.240357+00:00",
+      "metadata": {
+        "title": "Deep Residual Learning for Image Recognition",
+        "authors": [
+          "Kaiming He",
+          "Xiangyu Zhang",
+          "Shaoqing Ren",
+          "Jian Sun"
+        ],
+        "year": 2016,
+        "doi": "10.1109/cvpr.2016.90",
+        "type": "proceedings-article"
+      },
+      "metadata_sha256": "5ea0ad81b29277eda81ac0ce94b38bc24b72641ba3ea3b0ef39bbc1d038d47f6",
+      "claim_support_sha256": "ae76d8e3fc873309214790d5dadef2f0f6a4b18c68ebd9dd83a0420695b0859e",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "zuiderveld_1994_clahe",
+      "identifier": "doi:10.1016/B978-0-12-336156-1.50061-6",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1016%2FB978-0-12-336156-1.50061-6?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:40:08.663478+00:00",
+      "metadata": {
+        "title": "Contrast Limited Adaptive Histogram Equalization",
+        "authors": [
+          "Karel Zuiderveld"
+        ],
+        "year": 1994,
+        "doi": "10.1016/b978-0-12-336156-1.50061-6",
+        "type": "book-chapter"
+      },
+      "metadata_sha256": "bc1a5a70bbaf65f901c7cf16785bda36077a71664e2a4353e09b22ac3896147a",
+      "claim_support_sha256": "a521a0ff71c31edc244ed474b280cea15b522f460e456af07bbd8c344d15746f",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "kingma_2015_adam",
+      "identifier": "arxiv:1412.6980",
+      "status": "verified",
+      "provider": "arxiv",
+      "request_url": "https://export.arxiv.org/api/query?id_list=1412.6980",
+      "checked_at": "2026-11-26T00:40:16.304356+00:00",
+      "metadata": {
+        "title": "Adam: A Method for Stochastic Optimization",
+        "authors": [
+          "Diederik P. Kingma",
+          "Jimmy Ba"
+        ],
+        "year": 2014,
+        "arxiv_id": "1412.6980",
+        "type": "preprint"
+      },
+      "metadata_sha256": "eca322132e6827243bd94392612c632232df2b34590edf23114809eedc78e3be",
+      "claim_support_sha256": "87488b256e1afed91e7466fda33123a4db4e4d518480d3bb775c13c430a16359",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    },
+    {
+      "key": "youden_1950_index",
+      "identifier": "doi:10.1002/1097-0142(1950)3:1<32::AID-CNCR2820030106>3.0.CO;2-3",
+      "status": "verified",
+      "provider": "crossref",
+      "request_url": "https://api.crossref.org/works/10.1002%2F1097-0142%281950%293%3A1%3C32%3A%3AAID-CNCR2820030106%3E3.0.CO%3B2-3?mailto=researcher%40bahria.edu.pk",
+      "checked_at": "2026-11-26T00:40:20.944610+00:00",
+      "metadata": {
+        "title": "Index for rating diagnostic tests",
+        "authors": [
+          "W. J. Youden"
+        ],
+        "year": 1950,
+        "doi": "10.1002/1097-0142(1950)3:1<32::aid-cncr2820030106>3.0.co;2-3",
+        "type": "journal-article"
+      },
+      "metadata_sha256": "22b992e7775ec02bb89bbbd16c69a2fab7b0f61bf825241b25d35e2f65d2873e",
+      "claim_support_sha256": "b4cc6cc201389607f3d023a9c1b65aab0fe9a81cea74e63bdfaabc168f727a1e",
+      "cross_check": null,
+      "cross_check_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "error": ""
+    }
+  ]
+}

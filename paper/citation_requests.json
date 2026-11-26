@@ -1,0 +1,291 @@
+{
+  "schema_version": "ai-research-writing/citation-requests-v1",
+  "entries": [
+    {
+      "key": "scheirer_2013_osr",
+      "identifier": "doi:10.1109/TPAMI.2012.256",
+      "claim_support": [
+        {
+          "claim": "Formalized open-set recognition by defining open space risk for classifiers tested on previously unseen classes.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "IEEE TPAMI 2013 paper formulating open space risk and the 1-vs-Set Machine.",
+          "source": "Crossref doi:10.1109/TPAMI.2012.256"
+        }
+      ]
+    },
+    {
+      "key": "bendale_2016_openmax",
+      "identifier": "doi:10.1109/CVPR.2016.173",
+      "claim_support": [
+        {
+          "claim": "Showed deep networks output high confidence on unknown inputs and proposed OpenMax calibration.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "CVPR 2016 paper introducing OpenMax with Extreme Value Theory to bound open space risk.",
+          "source": "Crossref doi:10.1109/CVPR.2016.173"
+        }
+      ]
+    },
+    {
+      "key": "hendrycks_2017_msp",
+      "identifier": "arxiv:1610.02136",
+      "claim_support": [
+        {
+          "claim": "Established Maximum Softmax Probability (MSP) as a standard out-of-distribution baseline for neural networks.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "Hendrycks and Gimpel baseline using max softmax probability for OOD detection.",
+          "source": "arXiv:1610.02136"
+        }
+      ]
+    },
+    {
+      "key": "geng_2021_survey",
+      "identifier": "doi:10.1109/TPAMI.2020.2981604",
+      "claim_support": [
+        {
+          "claim": "Categorized open-set recognition methods into discriminative and generative distance/boundary formulations.",
+          "relation": "background",
+          "status": "verified",
+          "evidence": "IEEE TPAMI 2021 survey of OSR models, open space risk, and protocols.",
+          "source": "Crossref doi:10.1109/TPAMI.2020.2981604"
+        }
+      ]
+    },
+    {
+      "key": "vaze_2022_osr",
+      "identifier": "arxiv:2110.06207",
+      "claim_support": [
+        {
+          "claim": "Linked closed-set accuracy to open-set separability and highlighted semantic shift difficulty.",
+          "relation": "contrast",
+          "status": "verified",
+          "evidence": "Vaze et al. analysis of closed-set strength and semantic shift OSR evaluation.",
+          "source": "arXiv:2110.06207"
+        }
+      ]
+    },
+    {
+      "key": "valdenegro_2016_oceans",
+      "identifier": "doi:10.1109/OCEANS.2016.7761140",
+      "claim_support": [
+        {
+          "claim": "Applied convolutional neural networks to object recognition in forward-looking sonar imagery.",
+          "relation": "background",
+          "status": "verified",
+          "evidence": "OCEANS 2016 paper evaluating CNNs on forward-looking sonar target crops.",
+          "source": "Crossref doi:10.1109/OCEANS.2016.7761140"
+        }
+      ]
+    },
+    {
+      "key": "valdenegro_2017_oceans",
+      "identifier": "doi:10.1109/OCEANSE.2017.8084987",
+      "claim_support": [
+        {
+          "claim": "Established convolutional architecture and preprocessing practices for forward-looking sonar classification.",
+          "relation": "background",
+          "status": "verified",
+          "evidence": "OCEANS 2017 Aberdeen study on CNN design for FLS images.",
+          "source": "Crossref doi:10.1109/OCEANSE.2017.8084987"
+        }
+      ]
+    },
+    {
+      "key": "williams_2016_icpr",
+      "identifier": "doi:10.1109/ICPR.2016.7900011",
+      "claim_support": [
+        {
+          "claim": "Demonstrated deep convolutional classifiers on underwater sonar imagery under speckle and orientation changes.",
+          "relation": "background",
+          "status": "verified",
+          "evidence": "ICPR 2016 paper applying deep CNNs to underwater sonar target classification.",
+          "source": "Crossref doi:10.1109/ICPR.2016.7900011"
+        }
+      ]
+    },
+    {
+      "key": "singh_2021_iccvw",
+      "identifier": "doi:10.1109/ICCVW54120.2021.00417",
+      "claim_support": [
+        {
+          "claim": "Documented the water-tank Marine Debris FLS collection captured with a 3.0 MHz Sound Metrics ARIS Explorer 3000 sonar.",
+          "relation": "software",
+          "status": "verified",
+          "evidence": "ICCVW 2021 paper introducing the ARIS Explorer 3000 marine debris water-tank imagery.",
+          "source": "Crossref doi:10.1109/ICCVW54120.2021.00417"
+        }
+      ]
+    },
+    {
+      "key": "valdenegro_2025_datasets",
+      "identifier": "arxiv:2503.22880",
+      "claim_support": [
+        {
+          "claim": "Released the Marine Debris Forward-Looking Sonar (MD-FLS) water-tank classification splits used in this benchmark.",
+          "relation": "software",
+          "status": "verified",
+          "evidence": "MD-FLS datasets release covering watertank-cropped and companion splits.",
+          "source": "arXiv:2503.22880"
+        }
+      ]
+    },
+    {
+      "key": "jiao_2024_sonar_osr",
+      "identifier": "doi:10.1016/j.eswa.2024.123495",
+      "claim_support": [
+        {
+          "claim": "Investigated open-set recognition on forward-looking sonar imagery with long-tail class distributions.",
+          "relation": "contrast",
+          "status": "verified",
+          "evidence": "Expert Systems with Applications 2024 article addressing sonar OSR.",
+          "source": "Crossref doi:10.1016/j.eswa.2024.123495"
+        }
+      ]
+    },
+    {
+      "key": "li_2026_copenmax",
+      "identifier": "doi:10.1016/j.eswa.2026.131463",
+      "claim_support": [
+        {
+          "claim": "Proposed Class-balanced OpenMax to calibrate logits under imbalanced sonar open-set recognition.",
+          "relation": "contrast",
+          "status": "verified",
+          "evidence": "Expert Systems with Applications 2026 paper calibrating OpenMax tails for sonar.",
+          "source": "Crossref doi:10.1016/j.eswa.2026.131463"
+        }
+      ]
+    },
+    {
+      "key": "scholkopf_2001_ocsvm",
+      "identifier": "doi:10.1162/089976601750264965",
+      "claim_support": [
+        {
+          "claim": "Formulated One-Class SVM for estimating the high-dimensional support of known training representations.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "Neural Computation 2001 paper defining nu-parameterized One-Class SVM.",
+          "source": "Crossref doi:10.1162/089976601750264965"
+        }
+      ]
+    },
+    {
+      "key": "tax_2004_svdd",
+      "identifier": "doi:10.1023/B:MACH.0000008084.60811.49",
+      "claim_support": [
+        {
+          "claim": "Defined Support Vector Data Description (SVDD) enclosing known samples within a minimum-volume hypersphere.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "Machine Learning 2004 paper introducing SVDD hypersphere boundaries.",
+          "source": "Crossref doi:10.1023/B:MACH.0000008084.60811.49"
+        }
+      ]
+    },
+    {
+      "key": "chong_2020_ijcnn",
+      "identifier": "doi:10.1109/IJCNN48605.2020.9207209",
+      "claim_support": [
+        {
+          "claim": "Analyzed collapse and geometric failure modes of single-center hypersphere one-class objectives on deep features.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "IJCNN 2020 paper analyzing mode/hypersphere collapse in Deep One-Class classification.",
+          "source": "Crossref doi:10.1109/IJCNN48605.2020.9207209"
+        }
+      ]
+    },
+    {
+      "key": "schroff_2015_facenet",
+      "identifier": "doi:10.1109/CVPR.2015.7298682",
+      "claim_support": [
+        {
+          "claim": "Introduced L2-normalized hyperspherical triplet embeddings with hard triplet mining.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "CVPR 2015 FaceNet paper normalizing deep embeddings to the unit hypersphere under triplet loss.",
+          "source": "Crossref doi:10.1109/CVPR.2015.7298682"
+        }
+      ]
+    },
+    {
+      "key": "hoffer_2015_triplet",
+      "identifier": "arxiv:1412.6622",
+      "claim_support": [
+        {
+          "claim": "Formulated deep metric learning with triplet networks enforcing relative positive-negative margins.",
+          "relation": "background",
+          "status": "verified",
+          "evidence": "Hoffer and Ailon triplet metric learning formulation.",
+          "source": "arXiv:1412.6622"
+        }
+      ]
+    },
+    {
+      "key": "musgrave_2020_pml",
+      "identifier": "arxiv:2008.09164",
+      "claim_support": [
+        {
+          "claim": "Provided the PyTorch Metric Learning implementations for cosine TripletMarginLoss and online hard mining.",
+          "relation": "software",
+          "status": "verified",
+          "evidence": "PyTorch Metric Learning technical report documenting the library modules used in our pipeline.",
+          "source": "arXiv:2008.09164"
+        }
+      ]
+    },
+    {
+      "key": "he_2016_resnet",
+      "identifier": "doi:10.1109/CVPR.2016.90",
+      "claim_support": [
+        {
+          "claim": "Defined the ResNet-50 convolutional architecture used as our feature extraction backbone.",
+          "relation": "software",
+          "status": "verified",
+          "evidence": "CVPR 2016 Deep Residual Learning paper.",
+          "source": "Crossref doi:10.1109/CVPR.2016.90"
+        }
+      ]
+    },
+    {
+      "key": "zuiderveld_1994_clahe",
+      "identifier": "doi:10.1016/B978-0-12-336156-1.50061-6",
+      "claim_support": [
+        {
+          "claim": "Introduced Contrast Limited Adaptive Histogram Equalization (CLAHE) to enhance local contrast without amplifying uniform background noise.",
+          "relation": "software",
+          "status": "verified",
+          "evidence": "Graphics Gems IV chapter defining CLAHE.",
+          "source": "Crossref doi:10.1016/B978-0-12-336156-1.50061-6"
+        }
+      ]
+    },
+    {
+      "key": "kingma_2015_adam",
+      "identifier": "arxiv:1412.6980",
+      "claim_support": [
+        {
+          "claim": "Defined the Adam stochastic optimizer used during training of both baseline and metric-learning models.",
+          "relation": "software",
+          "status": "verified",
+          "evidence": "Kingma and Ba Adam optimizer paper.",
+          "source": "arXiv:1412.6980"
+        }
+      ]
+    },
+    {
+      "key": "youden_1950_index",
+      "identifier": "doi:10.1002/1097-0142(1950)3:1<32::AID-CNCR2820030106>3.0.CO;2-3",
+      "claim_support": [
+        {
+          "claim": "Defined Youden's J statistic for selecting an optimal binary operating threshold along an ROC curve.",
+          "relation": "direct",
+          "status": "verified",
+          "evidence": "Cancer 1950 article defining J = TPR - FPR threshold calibration.",
+          "source": "Crossref doi:10.1002/1097-0142(1950)3:1<32::AID-CNCR2820030106>3.0.CO;2-3"
+        }
+      ]
+    }
+  ]
+}
