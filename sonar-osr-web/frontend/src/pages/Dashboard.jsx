@@ -28,7 +28,7 @@ const SAMPLE_THUMBS = {
   chain: '/samples/chain-sample.png',
   valve: '/samples/valve-sample.png',
   'shampoo-bottle': '/samples/shampoo-sample.png',
-  'standing-bottle': null,
+  'standing-bottle': '/samples/standing-bottle-sample.png',
 };
 
 const ANALYTIC_TABS = [
@@ -92,8 +92,9 @@ export default function Dashboard() {
       })
       .sort((a, b) => a.value - b.value);
 
-    const hardest = rankedUnknowns.slice(0, 3);
-    const easiest = [...rankedUnknowns].reverse().slice(0, 3);
+    const half = Math.max(1, Math.floor(rankedUnknowns.length / 2));
+    const hardest = rankedUnknowns.slice(0, half);
+    const easiest = rankedUnknowns.slice(half).reverse();
 
     // Method leaderboard
     const methodRows = activeMethodIds

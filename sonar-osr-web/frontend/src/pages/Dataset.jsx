@@ -19,7 +19,7 @@ const UNKNOWN_CLASSES = [
   { name: 'chain', desc: 'Heavy seabed moor chain', thumb: '/samples/chain-sample.png' },
   { name: 'valve', desc: 'Subsea pipeline valve actuator', thumb: '/samples/valve-sample.png' },
   { name: 'shampoo-bottle', desc: 'High-density polymer flask', thumb: '/samples/shampoo-sample.png' },
-  { name: 'standing-bottle', desc: 'Upright orientation glass bottle', thumb: null },
+  { name: 'standing-bottle', desc: 'Upright orientation glass bottle', thumb: '/samples/standing-bottle-sample.png' },
 ];
 
 export default function Dataset() {
